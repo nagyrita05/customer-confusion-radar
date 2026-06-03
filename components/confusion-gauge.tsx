@@ -57,10 +57,10 @@ export function ConfusionGauge({ score }: ConfusionGaugeProps) {
         </div>
       </div>
       <p className="mt-2 text-sm font-semibold text-foreground">
-        Felreertesi index
+        Félreértési index
       </p>
       <p className="text-sm text-muted-foreground">
-        A kommentek {clampedScore}%-a tartalmaz felreertest
+        A kommentek {clampedScore}%-a tartalmaz félreértést
       </p>
     </div>
   );

@@ -28,7 +28,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       {result.topConfusions.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Felreertesi mintak
+            Félreértési minták
           </h2>
           <div className="space-y-4">
             {result.topConfusions.map((pattern, index) => (
@@ -42,7 +42,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       {result.recurringQuestions.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Visszatero kerdesek
+            Visszatérő kérdések
           </h2>
           <ol className="list-decimal list-inside space-y-2">
             {result.recurringQuestions.map((question, index) => (
@@ -58,7 +58,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       {result.blindSpots.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Kommunikacios vakfoltok
+            Kommunikációs vakfoltok
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {result.blindSpots.map((blindSpot, index) => (

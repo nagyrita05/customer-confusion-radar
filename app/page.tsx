@@ -15,7 +15,7 @@ export default function HomePage() {
 
   const handleAnalyze = async () => {
     if (!comments.trim()) {
-      setError("Kerlek adj meg kommenteket az elemzeshez");
+      setError("Kérlek adj meg kommenteket az elemzéshez");
       return;
     }
 
@@ -35,12 +35,12 @@ export default function HomePage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Nem sikerult elemezni a kommenteket");
+        throw new Error(data.error || "Nem sikerült elemezni a kommenteket");
       }
 
       setResult(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Hiba tortent");
+      setError(err instanceof Error ? err.message : "Hiba történt");
     } finally {
       setIsLoading(false);
     }
@@ -60,7 +60,7 @@ export default function HomePage() {
             Customer Confusion Radar
           </h1>
           <p className="text-lg text-muted-foreground">
-            A kommentjeid megmutatjak, hol veszited el a potencialis ugyfeleket.
+            A kommentjeid megmutatják, hol veszíted el a potenciális ügyfeleket.
           </p>
         </header>
 
@@ -70,14 +70,14 @@ export default function HomePage() {
             htmlFor="comments"
             className="block text-sm font-medium text-foreground mb-2"
           >
-            Masold be a kommenteket, ertekelesteket vagy ugyfelszolgalati uzeneteket (soronkent egyet)
+            Másold be a kommenteket, értékeléseket vagy ügyfélszolgálati üzeneteket (soronként egyet)
           </label>
           <textarea
             id="comments"
             value={comments}
             onChange={(e) => setComments(e.target.value)}
             className="w-full h-48 p-4 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-y"
-            placeholder="Masold be a kommenteket..."
+            placeholder="Másold be a kommenteket..."
             disabled={isLoading}
           />
 
@@ -90,10 +90,10 @@ export default function HomePage() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Elemzes folyamatban...
+                  Elemzés folyamatban...
                 </>
               ) : (
-                "Elemzes inditasa"
+                "Elemzés indítása"
               )}
             </Button>
             <Button
@@ -102,7 +102,7 @@ export default function HomePage() {
               disabled={isLoading}
               size="lg"
             >
-              Minta betoltese
+              Minta betöltése
             </Button>
           </div>
 
