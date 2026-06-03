@@ -60,7 +60,7 @@ export default function HomePage() {
             Customer Confusion Radar
           </h1>
           <p className="text-lg text-muted-foreground">
-            A kommentjeid megmutatják, hol veszíted el a potenciális ügyfeleket.
+            Fedezd fel, mit nem kommunikálsz elég egyértelműen.
           </p>
         </header>
 
