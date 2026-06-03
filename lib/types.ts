@@ -13,6 +13,7 @@ export interface BlindSpot {
 
 export interface AnalysisResult {
   headline: string;
+  confusionScore: number;
   topConfusions: ConfusionPattern[];
   recurringQuestions: string[];
   blindSpots: BlindSpot[];

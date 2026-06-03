@@ -14,9 +14,9 @@ export function ConfusionCard({ pattern, index }: ConfusionCardProps) {
   };
 
   const severityLabel = {
-    critical: "Critical",
-    moderate: "Moderate",
-    minor: "Minor",
+    critical: "Kritikus",
+    moderate: "Kozepes",
+    minor: "Enyhe",
   };
 
   return (
@@ -54,7 +54,7 @@ export function ConfusionCard({ pattern, index }: ConfusionCardProps) {
 
       <div className="bg-green-50 dark:bg-green-950/30 rounded-lg p-4 border border-green-200 dark:border-green-800">
         <p className="text-sm font-bold text-green-800 dark:text-green-300 mb-1">
-          Fix this week:
+          Ezt csinald meg ezen a heten:
         </p>
         <p className="text-sm text-green-700 dark:text-green-400">
           {pattern.actionableAdvice}

@@ -1,6 +1,7 @@
 import { AnalysisResult } from "@/lib/types";
 import { ConfusionCard } from "./confusion-card";
 import { BlindSpotCard } from "./blind-spot-card";
+import { ConfusionGauge } from "./confusion-gauge";
 
 interface AnalysisResultsProps {
   result: AnalysisResult;
@@ -9,6 +10,13 @@ interface AnalysisResultsProps {
 export function AnalysisResults({ result }: AnalysisResultsProps) {
   return (
     <div className="space-y-10">
+      {/* Confusion Score Gauge */}
+      {result.confusionScore !== undefined && (
+        <section className="flex justify-center py-4">
+          <ConfusionGauge score={result.confusionScore} />
+        </section>
+      )}
+
       {/* Headline Insight */}
       <section>
         <h2 className="text-2xl md:text-3xl font-bold text-foreground leading-tight text-balance">
@@ -20,7 +28,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       {result.topConfusions.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Confusion Patterns
+            Felreertesi mintak
           </h2>
           <div className="space-y-4">
             {result.topConfusions.map((pattern, index) => (
@@ -34,7 +42,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       {result.recurringQuestions.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Recurring Questions
+            Visszatero kerdesek
           </h2>
           <ol className="list-decimal list-inside space-y-2">
             {result.recurringQuestions.map((question, index) => (
@@ -50,7 +58,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       {result.blindSpots.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Communication Blind Spots
+            Kommunikacios vakfoltok
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             {result.blindSpots.map((blindSpot, index) => (
@@ -64,7 +72,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       {result.suggestedFAQ.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Suggested FAQ
+            Javasolt FAQ
           </h2>
           <ol className="list-decimal list-inside space-y-2">
             {result.suggestedFAQ.slice(0, 5).map((item, index) => (

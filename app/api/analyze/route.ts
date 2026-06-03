@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
 The JSON structure must be:
 {
   "headline": "X people asked the same question in different words",
+  "confusionScore": 65,
   "topConfusions": [
     {
       "topic": "short topic name",
@@ -42,7 +43,9 @@ The JSON structure must be:
   ],
   "suggestedFAQ": ["FAQ item 1", "FAQ item 2", "FAQ item 3", "FAQ item 4", "FAQ item 5"],
   "closingInsight": "one strong sentence summarizing the biggest opportunity"
-}`;
+}
+
+IMPORTANT: confusionScore is a number from 0-100 representing the percentage of comments that show confusion, uncertainty, or missing information. Calculate this based on how many comments contain questions, uncertainty, or confusion vs. clear statements.`;
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
