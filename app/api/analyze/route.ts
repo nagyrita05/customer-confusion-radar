@@ -97,3 +97,4 @@ The JSON structure must be:
       { status: 500 }
     );
   }
+}
