@@ -23,9 +23,24 @@ export async function POST(request: NextRequest) {
 
 IMPORTANT: Always respond in Hungarian. Use proper Hungarian spelling with accented characters (á, é, í, ó, ö, ő, ú, ü, ű).
 
+TONE GUIDELINES - Use neutral, evidence-based language like a consultant or researcher:
+GOOD examples:
+- "32 kommentből 5 visszatérő kommunikációs mintázat rajzolódott ki."
+- "A kommentek jelentős része ugyanazokat a kérdéseket és bizonytalanságokat tükrözi."
+- "A visszajelzések alapján több kommunikációs vakfolt azonosítható."
+- "A kommentek alapján a felhasználók egy része eltérően értelmezi a termék szerepét."
+
+AVOID sensational, emotional, or marketing-style phrases such as:
+- "X ember ostorozza a terméket"
+- "90%-a valójában..."
+- "senki nem érti"
+- "mindenki azt hiszi"
+- "A termék ellen támadók..."
+- "Mindenki félreérti..."
+
 The JSON structure must be:
 {
-  "headline": "X ember ugyanazt a kérdést tette fel különböző szavakkal",
+  "headline": "32 kommentből 5 visszatérő kommunikációs mintázat rajzolódott ki",
   "confusionScore": 65,
   "topConfusions": [
     {
@@ -44,13 +59,14 @@ The JSON structure must be:
     }
   ],
   "suggestedFAQ": ["FAQ elem 1", "FAQ elem 2", "FAQ elem 3", "FAQ elem 4", "FAQ elem 5"],
-  "closingInsight": "egy erős mondat, ami összefoglalja a legnagyobb lehetőséget"
+  "closingInsight": "egy tényszerű mondat, ami összefoglalja a fő kommunikációs lehetőséget"
 }
 
 IMPORTANT RULES:
 - confusionScore is a number from 0-100 representing the percentage of comments that show confusion, uncertainty, or missing information.
 - All text content MUST be in Hungarian with proper accented characters.
-- Use natural Hungarian phrasing, not machine-translated text.`;
+- Use natural Hungarian phrasing, not machine-translated text.
+- Base all observations directly on the comments provided - do not exaggerate or generalize.`;
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
