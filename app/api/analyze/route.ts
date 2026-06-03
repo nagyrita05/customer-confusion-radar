@@ -51,7 +51,8 @@ The JSON structure must be:
       "severity": "critical|moderate|minor"
     }
   ],
-  "recurringQuestions": ["Kérdés 1?", "Kérdés 2?", "Kérdés 3?"],
+  "recurringQuestionsOrConcerns": ["Kérdés vagy aggodalom 1", "Kérdés vagy aggodalom 2", "Kérdés vagy aggodalom 3"],
+  "sectionType": "questions|concerns",
   "blindSpots": [
     {
       "label": "rövid címke",
@@ -64,6 +65,8 @@ The JSON structure must be:
 
 IMPORTANT RULES:
 - confusionScore is a number from 0-100 representing the percentage of comments that show confusion, uncertainty, or missing information.
+- sectionType: Analyze the comments carefully. If they contain actual questions (with question marks or question-like phrasing), use "questions". If they mainly contain opinions, concerns, worries, or objections without direct questions, use "concerns".
+- recurringQuestionsOrConcerns: If sectionType is "questions", list the most common questions. If sectionType is "concerns", list the most common worries, objections, or themes.
 - All text content MUST be in Hungarian with proper accented characters.
 - Use natural Hungarian phrasing, not machine-translated text.
 - Base all observations directly on the comments provided - do not exaggerate or generalize.`;

@@ -15,7 +15,8 @@ export interface AnalysisResult {
   headline: string;
   confusionScore: number;
   topConfusions: ConfusionPattern[];
-  recurringQuestions: string[];
+  recurringQuestionsOrConcerns: string[];
+  sectionType: "questions" | "concerns";
   blindSpots: BlindSpot[];
   suggestedFAQ: string[];
   closingInsight: string;

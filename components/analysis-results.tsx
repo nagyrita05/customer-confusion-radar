@@ -3,7 +3,7 @@ import { FindingCard } from "./finding-card";
 import { ActionCard } from "./action-card";
 import { BlindSpotCard } from "./blind-spot-card";
 import { ConfusionGauge } from "./confusion-gauge";
-import { Search, Lightbulb } from "lucide-react";
+import { Search, Lightbulb, HelpCircle, AlertTriangle } from "lucide-react";
 
 interface AnalysisResultsProps {
   result: AnalysisResult;
@@ -50,16 +50,23 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
           </section>
         )}
 
-        {/* Recurring Questions */}
-        {result.recurringQuestions.length > 0 && (
+        {/* Recurring Questions or Concerns */}
+        {result.recurringQuestionsOrConcerns.length > 0 && (
           <section>
-            <h3 className="text-xl font-semibold text-foreground mb-4">
-              Leggyakoribb kérdések
-            </h3>
+            <div className="flex items-center gap-2 mb-4">
+              {result.sectionType === "questions" ? (
+                <HelpCircle className="h-5 w-5 text-blue-500" />
+              ) : (
+                <AlertTriangle className="h-5 w-5 text-amber-500" />
+              )}
+              <h3 className="text-xl font-semibold text-foreground">
+                {result.sectionType === "questions" ? "Leggyakoribb kérdések" : "Visszatérő aggodalmak"}
+              </h3>
+            </div>
             <ol className="list-decimal list-inside space-y-2">
-              {result.recurringQuestions.map((question, index) => (
+              {result.recurringQuestionsOrConcerns.map((item, index) => (
                 <li key={index} className="text-muted-foreground leading-relaxed">
-                  {question}
+                  {item}
                 </li>
               ))}
             </ol>
