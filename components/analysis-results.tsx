@@ -42,7 +42,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
       {result.recurringQuestions.length > 0 && (
         <section>
           <h2 className="text-xl font-semibold text-foreground mb-4">
-            Visszatérő kérdések
+            Leggyakoribb kérdések
           </h2>
           <ol className="list-decimal list-inside space-y-2">
             {result.recurringQuestions.map((question, index) => (

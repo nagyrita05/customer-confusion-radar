@@ -21,31 +21,36 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = `You are a communication gap detector. Your job is NOT sentiment analysis. Find recurring confusion, uncertainty and missing clarity in customer comments. Return ONLY valid JSON, no markdown, no extra text.
 
+IMPORTANT: Always respond in Hungarian. Use proper Hungarian spelling with accented characters (á, é, í, ó, ö, ő, ú, ü, ű).
+
 The JSON structure must be:
 {
-  "headline": "X people asked the same question in different words",
+  "headline": "X ember ugyanazt a kérdést tette fel különböző szavakkal",
   "confusionScore": 65,
   "topConfusions": [
     {
-      "topic": "short topic name",
-      "humanInsight": "plain language explanation of the confusion pattern",
-      "exampleComments": ["actual example from input", "another example"],
-      "actionableAdvice": "one concrete thing to fix this week",
+      "topic": "rövid téma megnevezés",
+      "humanInsight": "közérthető magyarázat a félreértési mintáról",
+      "exampleComments": ["tényleges példa a bemenetből", "másik példa"],
+      "actionableAdvice": "egy konkrét teendő erre a hétre",
       "severity": "critical|moderate|minor"
     }
   ],
-  "recurringQuestions": ["Question 1?", "Question 2?", "Question 3?"],
+  "recurringQuestions": ["Kérdés 1?", "Kérdés 2?", "Kérdés 3?"],
   "blindSpots": [
     {
-      "label": "short label",
-      "description": "what information is missing from your communication"
+      "label": "rövid címke",
+      "description": "milyen információ hiányzik a kommunikációdból"
     }
   ],
-  "suggestedFAQ": ["FAQ item 1", "FAQ item 2", "FAQ item 3", "FAQ item 4", "FAQ item 5"],
-  "closingInsight": "one strong sentence summarizing the biggest opportunity"
+  "suggestedFAQ": ["FAQ elem 1", "FAQ elem 2", "FAQ elem 3", "FAQ elem 4", "FAQ elem 5"],
+  "closingInsight": "egy erős mondat, ami összefoglalja a legnagyobb lehetőséget"
 }
 
-IMPORTANT: confusionScore is a number from 0-100 representing the percentage of comments that show confusion, uncertainty, or missing information. Calculate this based on how many comments contain questions, uncertainty, or confusion vs. clear statements.`;
+IMPORTANT RULES:
+- confusionScore is a number from 0-100 representing the percentage of comments that show confusion, uncertainty, or missing information.
+- All text content MUST be in Hungarian with proper accented characters.
+- Use natural Hungarian phrasing, not machine-translated text.`;
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -61,7 +66,7 @@ IMPORTANT: confusionScore is a number from 0-100 representing the percentage of 
         messages: [
           {
             role: "user",
-            content: `Analyze these customer comments for recurring confusion patterns. The comments may be in any language - analyze them in their original language but provide your response in the same language as the comments:\n\n${comments}`,
+            content: `Elemezd ezeket az ügyfélkommenteket visszatérő félreértési minták szempontjából. A válaszodat magyar nyelven add meg, megfelelő ékezetekkel:\n\n${comments}`,
           },
         ],
       }),

@@ -57,7 +57,7 @@ export default function HomePage() {
         {/* Header */}
         <header className="mb-10">
           <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3 text-balance">
-            Customer Confusion Radar
+            Kommunikációs Vakfolt Elemző
           </h1>
           <p className="text-lg text-muted-foreground">
             Fedezd fel, mit nem kommunikálsz elég egyértelműen.
