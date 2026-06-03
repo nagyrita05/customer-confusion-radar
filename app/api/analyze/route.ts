@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { comments } = await request.json();
+    const { comments, commentCount } = await request.json();
 
     if (!comments || typeof comments !== "string" || comments.trim() === "") {
       return NextResponse.json(
@@ -82,7 +82,9 @@ IMPORTANT RULES:
         messages: [
           {
             role: "user",
-            content: `Elemezd ezeket az ügyfélkommenteket visszatérő félreértési minták szempontjából. A válaszodat magyar nyelven add meg, megfelelő ékezetekkel:\n\n${comments}`,
+            content: `Összesen ${commentCount} komment érkezett. Használd ezt a pontos számot a headline-ban és minden hivatkozásban.
+
+Elemezd ezeket az ügyfélkommenteket visszatérő félreértési minták szempontjából. A válaszodat magyar nyelven add meg, megfelelő ékezetekkel:\n\n${comments}`,
           },
         ],
       }),

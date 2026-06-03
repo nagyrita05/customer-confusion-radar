@@ -24,12 +24,15 @@ export default function HomePage() {
     setResult(null);
 
     try {
+      const lines = comments.split('\n').filter(line => line.trim() !== '');
+      const commentCount = lines.length;
+
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comments }),
+        body: JSON.stringify({ comments, commentCount }),
       });
 
       const data = await response.json();
