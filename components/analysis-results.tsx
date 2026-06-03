@@ -67,7 +67,7 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
             Suggested FAQ
           </h2>
           <ol className="list-decimal list-inside space-y-2">
-            {result.suggestedFAQ.map((item, index) => (
+            {result.suggestedFAQ.slice(0, 5).map((item, index) => (
               <li key={index} className="text-muted-foreground leading-relaxed">
                 {item}
               </li>
@@ -78,10 +78,12 @@ export function AnalysisResults({ result }: AnalysisResultsProps) {
 
       {/* Closing Insight */}
       {result.closingInsight && (
-        <section className="border-t border-border pt-6">
-          <p className="text-muted-foreground italic text-lg leading-relaxed">
-            {result.closingInsight}
-          </p>
+        <section className="mt-8">
+          <div className="border-2 border-primary/30 bg-primary/5 rounded-xl p-6">
+            <p className="text-foreground text-lg md:text-xl leading-relaxed font-medium text-center">
+              {result.closingInsight}
+            </p>
+          </div>
         </section>
       )}
     </div>
