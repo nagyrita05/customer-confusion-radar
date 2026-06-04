@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { AnalysisResult, DataQualityStats } from "@/lib/types";
 import { sampleComments } from "@/lib/sample-data";
 import { AnalysisResults } from "@/components/analysis-results";
+import { cleanFacebookComments } from "@/lib/clean-comments";
 import { Loader2 } from "lucide-react";
 
 export default function HomePage() {
@@ -26,52 +27,25 @@ export default function HomePage() {
     setDataStats(null);
 
     try {
-      const allLines = comments.split('\n');
-      const totalLines = allLines.length;
+      // Clean Facebook metadata and extract real comment blocks
+      const { cleanedComments, stats } = cleanFacebookComments(comments);
       
-      // Filter out empty lines and metadata-like lines (timestamps, usernames, etc.)
-      // Keep emoji-only lines as they represent engagement signals
-      const metadataPatterns = [
-        /^\d{1,2}:\d{2}/, // Time patterns like "12:34"
-        /^\d{4}[-/]\d{2}[-/]\d{2}/, // Date patterns
-        /^@\w+/, // Username mentions
-        /^https?:\/\//, // URLs
-        /^\[.*\]$/, // Bracketed content
-        /^#\w+/, // Hashtags alone
-        /^={2,}$/, // Separator lines
-        /^-{2,}$/, // Separator lines
-        /^\[?(GIF|gif|Gif)\]?$/, // GIF-only reactions
-        /^\[?(image|Image|IMAGE|kép|Kép|KÉP)\]?$/, // Image-only indicators
-      ];
+      setDataStats(stats);
+      
+      if (cleanedComments.length === 0) {
+        throw new Error("Nem találtunk elemezhető kommenteket a bemenetben");
+      }
 
-      // Emoji detection regex - matches lines that are only emojis (with optional spaces)
-      const emojiOnlyPattern = /^[\p{Emoji}\s]+$/u;
-      
-      const cleanedLines = allLines.filter(line => {
-        const trimmed = line.trim();
-        if (!trimmed) return false;
-        
-        // Keep emoji-only lines
-        if (emojiOnlyPattern.test(trimmed)) return true;
-        
-        return !metadataPatterns.some(pattern => pattern.test(trimmed));
-      });
-      
-      const commentCount = cleanedLines.length;
-      const removedMetadata = totalLines - commentCount;
-      
-      setDataStats({
-        totalLines,
-        removedMetadata,
-        analyzedComments: commentCount,
-      });
+      // Join cleaned comments for API
+      const cleanedText = cleanedComments.join('\n---\n');
+      const commentCount = cleanedComments.length;
 
       const response = await fetch("/api/analyze", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comments, commentCount }),
+        body: JSON.stringify({ comments: cleanedText, commentCount }),
       });
 
       const data = await response.json();
