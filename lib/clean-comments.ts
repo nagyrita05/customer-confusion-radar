@@ -129,60 +129,86 @@ export function cleanFacebookComments(rawInput: string): CleaningResult {
   const allLines = rawInput.split('\n');
   const totalLines = allLines.length;
   
-  // First pass: mark lines as metadata, username, or potential content
-  const lineTypes: ('metadata' | 'username' | 'content' | 'emoji')[] = allLines.map((line, index) => {
+  // First pass: classify each line
+  type LineType = 'metadata' | 'username' | 'content' | 'emoji' | 'empty';
+  
+  const classifiedLines: { type: LineType; text: string }[] = allLines.map((line, index) => {
     const trimmed = line.trim();
     
-    if (!trimmed) return 'metadata';
-    if (isMetadata(line)) return 'metadata';
+    if (!trimmed) return { type: 'empty', text: '' };
+    if (isMetadata(line)) return { type: 'metadata', text: trimmed };
     
     // Check for emoji-only lines
     const emojiOnlyPattern = /^[\p{Emoji}\p{Emoji_Component}\s]+$/u;
     if (emojiOnlyPattern.test(trimmed) && !hasTextContent(trimmed)) {
-      return 'emoji';
+      return { type: 'emoji', text: trimmed };
     }
     
-    // Check if this looks like a username
-    // Usernames typically appear before content or metadata blocks
+    // Check if this looks like a username by looking at context
     if (looksLikeUsername(trimmed)) {
-      // Look ahead - if next non-empty line is content, this is probably a username
+      // Look ahead to see if followed by content
       for (let i = index + 1; i < allLines.length && i < index + 5; i++) {
         const nextLine = allLines[i].trim();
         if (!nextLine) continue;
         if (isMetadata(allLines[i])) continue;
         if (!looksLikeUsername(nextLine)) {
-          // Next meaningful line is content, so this is a username
-          return 'username';
+          return { type: 'username', text: trimmed };
         }
         break;
       }
     }
     
-    return 'content';
+    return { type: 'content', text: trimmed };
   });
   
-  // Second pass: group consecutive content lines into comment blocks
+  // Second pass: group into comment blocks
+  // A new comment starts when we see a username (indicates new person commenting)
   const commentBlocks: string[] = [];
   let currentBlock: string[] = [];
+  let lastSeenUsername = false;
   
-  for (let i = 0; i < allLines.length; i++) {
-    const lineType = lineTypes[i];
-    const trimmed = allLines[i].trim();
+  for (let i = 0; i < classifiedLines.length; i++) {
+    const { type, text } = classifiedLines[i];
     
-    if (lineType === 'content') {
-      currentBlock.push(trimmed);
-    } else if (lineType === 'emoji' && currentBlock.length > 0) {
-      // Attach emoji to previous block if exists
-      currentBlock.push(trimmed);
-    } else {
-      // Non-content line - finalize current block if any
+    if (type === 'username') {
+      // Save previous block if any
       if (currentBlock.length > 0) {
         commentBlocks.push(currentBlock.join('\n'));
         currentBlock = [];
       }
-      // Standalone emoji counts as its own comment
-      if (lineType === 'emoji') {
-        commentBlocks.push(trimmed);
+      lastSeenUsername = true;
+    } else if (type === 'content') {
+      // Content line - add to current block
+      currentBlock.push(text);
+      lastSeenUsername = false;
+    } else if (type === 'emoji') {
+      if (currentBlock.length > 0) {
+        // Attach emoji to current block
+        currentBlock.push(text);
+      } else if (lastSeenUsername) {
+        // Emoji right after username = emoji-only comment
+        currentBlock.push(text);
+      }
+      // Otherwise skip standalone emoji not attached to anything
+    } else if (type === 'metadata' || type === 'empty') {
+      // Metadata/empty lines don't break comment blocks on their own
+      // Only usernames start new blocks
+      // However, multiple consecutive metadata lines might indicate block break
+      
+      // Check if we have 2+ consecutive metadata/empty lines
+      let consecutiveMetadata = 0;
+      for (let j = i; j < classifiedLines.length; j++) {
+        if (classifiedLines[j].type === 'metadata' || classifiedLines[j].type === 'empty') {
+          consecutiveMetadata++;
+        } else {
+          break;
+        }
+      }
+      
+      // If 3+ consecutive metadata/empty lines, treat as block separator
+      if (consecutiveMetadata >= 3 && currentBlock.length > 0) {
+        commentBlocks.push(currentBlock.join('\n'));
+        currentBlock = [];
       }
     }
   }
