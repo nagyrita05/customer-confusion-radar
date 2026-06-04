@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { AnalysisResult } from "@/lib/types";
+import { AnalysisResult, DataQualityStats } from "@/lib/types";
 import { sampleComments } from "@/lib/sample-data";
 import { AnalysisResults } from "@/components/analysis-results";
 import { Loader2 } from "lucide-react";
@@ -10,6 +10,7 @@ import { Loader2 } from "lucide-react";
 export default function HomePage() {
   const [comments, setComments] = useState("");
   const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [dataStats, setDataStats] = useState<DataQualityStats | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,10 +23,38 @@ export default function HomePage() {
     setIsLoading(true);
     setError(null);
     setResult(null);
+    setDataStats(null);
 
     try {
-      const lines = comments.split('\n').filter(line => line.trim() !== '');
-      const commentCount = lines.length;
+      const allLines = comments.split('\n');
+      const totalLines = allLines.length;
+      
+      // Filter out empty lines and metadata-like lines (timestamps, usernames, etc.)
+      const metadataPatterns = [
+        /^\d{1,2}:\d{2}/, // Time patterns like "12:34"
+        /^\d{4}[-/]\d{2}[-/]\d{2}/, // Date patterns
+        /^@\w+/, // Username mentions
+        /^https?:\/\//, // URLs
+        /^\[.*\]$/, // Bracketed content
+        /^#\w+/, // Hashtags alone
+        /^={2,}$/, // Separator lines
+        /^-{2,}$/, // Separator lines
+      ];
+      
+      const cleanedLines = allLines.filter(line => {
+        const trimmed = line.trim();
+        if (!trimmed) return false;
+        return !metadataPatterns.some(pattern => pattern.test(trimmed));
+      });
+      
+      const commentCount = cleanedLines.length;
+      const removedMetadata = totalLines - commentCount;
+      
+      setDataStats({
+        totalLines,
+        removedMetadata,
+        analyzedComments: commentCount,
+      });
 
       const response = await fetch("/api/analyze", {
         method: "POST",
@@ -119,7 +148,7 @@ export default function HomePage() {
         {/* Results Section */}
         {result && (
           <section className="border-t border-border pt-10">
-            <AnalysisResults result={result} />
+            <AnalysisResults result={result} dataStats={dataStats} />
           </section>
         )}
       </div>

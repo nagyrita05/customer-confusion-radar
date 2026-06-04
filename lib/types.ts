@@ -11,6 +11,12 @@ export interface BlindSpot {
   description: string;
 }
 
+export interface DataQualityStats {
+  totalLines: number;
+  removedMetadata: number;
+  analyzedComments: number;
+}
+
 export interface AnalysisResult {
   headline: string;
   confusionScore: number;

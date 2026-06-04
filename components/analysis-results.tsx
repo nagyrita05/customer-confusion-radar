@@ -1,17 +1,22 @@
-import { AnalysisResult } from "@/lib/types";
+import { AnalysisResult, DataQualityStats } from "@/lib/types";
 import { FindingCard } from "./finding-card";
 import { ActionCard } from "./action-card";
 import { BlindSpotCard } from "./blind-spot-card";
 import { ConfusionGauge } from "./confusion-gauge";
+import { DataQualityPanel } from "./data-quality-panel";
 import { Search, Lightbulb, HelpCircle, AlertTriangle } from "lucide-react";
 
 interface AnalysisResultsProps {
   result: AnalysisResult;
+  dataStats: DataQualityStats | null;
 }
 
-export function AnalysisResults({ result }: AnalysisResultsProps) {
+export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
   return (
     <div className="space-y-8">
+      {/* Data Quality Panel */}
+      {dataStats && <DataQualityPanel stats={dataStats} />}
+
       {/* Confusion Score Gauge */}
       {result.confusionScore !== undefined && (
         <section className="flex justify-center py-4">
