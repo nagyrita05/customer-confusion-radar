@@ -22,6 +22,9 @@ export function DataQualityPanel({ stats }: DataQualityPanelProps) {
           <span>{stats.analyzedComments}</span>
         </div>
       </div>
+      <p className="mt-2 text-xs text-muted-foreground/70 italic">
+        Az emoji- és GIF-alapú reakciók csak korlátozottan értelmezhetők szöveges bemenetből.
+      </p>
     </div>
   );
 }

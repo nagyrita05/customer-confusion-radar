@@ -30,6 +30,7 @@ export default function HomePage() {
       const totalLines = allLines.length;
       
       // Filter out empty lines and metadata-like lines (timestamps, usernames, etc.)
+      // Keep emoji-only lines as they represent engagement signals
       const metadataPatterns = [
         /^\d{1,2}:\d{2}/, // Time patterns like "12:34"
         /^\d{4}[-/]\d{2}[-/]\d{2}/, // Date patterns
@@ -39,11 +40,20 @@ export default function HomePage() {
         /^#\w+/, // Hashtags alone
         /^={2,}$/, // Separator lines
         /^-{2,}$/, // Separator lines
+        /^\[?(GIF|gif|Gif)\]?$/, // GIF-only reactions
+        /^\[?(image|Image|IMAGE|kép|Kép|KÉP)\]?$/, // Image-only indicators
       ];
+
+      // Emoji detection regex - matches lines that are only emojis (with optional spaces)
+      const emojiOnlyPattern = /^[\p{Emoji}\s]+$/u;
       
       const cleanedLines = allLines.filter(line => {
         const trimmed = line.trim();
         if (!trimmed) return false;
+        
+        // Keep emoji-only lines
+        if (emojiOnlyPattern.test(trimmed)) return true;
+        
         return !metadataPatterns.some(pattern => pattern.test(trimmed));
       });
       
