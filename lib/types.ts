@@ -11,10 +11,18 @@ export interface BlindSpot {
   description: string;
 }
 
+export interface DataQualityStats {
+  totalLines: number;
+  removedMetadata: number;
+  analyzedComments: number;
+}
+
 export interface AnalysisResult {
   headline: string;
+  confusionScore: number;
   topConfusions: ConfusionPattern[];
-  recurringQuestions: string[];
+  recurringQuestionsOrConcerns: string[];
+  sectionType: "questions" | "concerns";
   blindSpots: BlindSpot[];
   suggestedFAQ: string[];
   closingInsight: string;

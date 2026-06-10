@@ -8,15 +8,15 @@ interface ConfusionCardProps {
 
 export function ConfusionCard({ pattern, index }: ConfusionCardProps) {
   const severityStyles = {
-    critical: "bg-red-50 border-red-200 text-red-700",
-    moderate: "bg-amber-50 border-amber-200 text-amber-700",
-    minor: "bg-teal-50 border-teal-200 text-teal-700",
+    critical: "bg-red-500 text-white border-red-600",
+    moderate: "bg-amber-500 text-white border-amber-600",
+    minor: "bg-teal-500 text-white border-teal-600",
   };
 
   const severityLabel = {
-    critical: "Critical",
-    moderate: "Moderate",
-    minor: "Minor",
+    critical: "Kritikus",
+    moderate: "Közepes",
+    minor: "Enyhe",
   };
 
   return (
@@ -40,11 +40,11 @@ export function ConfusionCard({ pattern, index }: ConfusionCardProps) {
       </p>
 
       {pattern.exampleComments.length > 0 && (
-        <div className="mb-4 space-y-2">
+        <div className="mb-4 space-y-3">
           {pattern.exampleComments.map((comment, i) => (
             <blockquote
               key={i}
-              className="border-l-2 border-muted-foreground/30 pl-4 italic text-muted-foreground"
+              className="border-l-4 border-muted-foreground/40 pl-4 py-2 italic text-muted-foreground bg-muted/30 rounded-r-md"
             >
               &ldquo;{comment}&rdquo;
             </blockquote>
@@ -52,11 +52,11 @@ export function ConfusionCard({ pattern, index }: ConfusionCardProps) {
         </div>
       )}
 
-      <div className="bg-secondary/50 rounded-lg p-4 border border-border">
-        <p className="text-sm font-medium text-foreground mb-1">
-          Fix this week:
+      <div className="bg-green-50 dark:bg-green-950/30 rounded-lg p-4 border border-green-200 dark:border-green-800">
+        <p className="text-sm font-bold text-green-800 dark:text-green-300 mb-1">
+          Ezt csináld meg ezen a héten:
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-sm text-green-700 dark:text-green-400">
           {pattern.actionableAdvice}
         </p>
       </div>

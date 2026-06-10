@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { comments } = await request.json();
+    const { comments, commentCount } = await request.json();
 
     if (!comments || typeof comments !== "string" || comments.trim() === "") {
       return NextResponse.json(
@@ -21,28 +21,55 @@ export async function POST(request: NextRequest) {
 
     const systemPrompt = `You are a communication gap detector. Your job is NOT sentiment analysis. Find recurring confusion, uncertainty and missing clarity in customer comments. Return ONLY valid JSON, no markdown, no extra text.
 
+IMPORTANT: Always respond in Hungarian. Use proper Hungarian spelling with accented characters (á, é, í, ó, ö, ő, ú, ü, ű).
+
+TONE GUIDELINES - Use neutral, evidence-based language like a consultant or researcher:
+GOOD examples:
+- "32 kommentből 5 visszatérő kommunikációs mintázat rajzolódott ki."
+- "A kommentek jelentős része ugyanazokat a kérdéseket és bizonytalanságokat tükrözi."
+- "A visszajelzések alapján több kommunikációs vakfolt azonosítható."
+- "A kommentek alapján a felhasználók egy része eltérően értelmezi a termék szerepét."
+
+AVOID sensational, emotional, or marketing-style phrases such as:
+- "X ember ostorozza a terméket"
+- "90%-a valójában..."
+- "senki nem érti"
+- "mindenki azt hiszi"
+- "A termék ellen támadók..."
+- "Mindenki félreérti..."
+
 The JSON structure must be:
 {
-  "headline": "X people asked the same question in different words",
+  "headline": "32 kommentből 5 visszatérő kommunikációs mintázat rajzolódott ki",
+  "confusionScore": 65,
   "topConfusions": [
     {
-      "topic": "short topic name",
-      "humanInsight": "plain language explanation of the confusion pattern",
-      "exampleComments": ["actual example from input", "another example"],
-      "actionableAdvice": "one concrete thing to fix this week",
+      "topic": "rövid téma megnevezés",
+      "humanInsight": "közérthető magyarázat a félreértési mintáról",
+      "exampleComments": ["tényleges példa a bemenetből", "másik példa"],
+      "actionableAdvice": "egy konkrét teendő erre a hétre",
       "severity": "critical|moderate|minor"
     }
   ],
-  "recurringQuestions": ["Question 1?", "Question 2?", "Question 3?"],
+  "recurringQuestionsOrConcerns": ["Kérdés vagy aggodalom 1", "Kérdés vagy aggodalom 2", "Kérdés vagy aggodalom 3"],
+  "sectionType": "questions|concerns",
   "blindSpots": [
     {
-      "label": "short label",
-      "description": "what information is missing from your communication"
+      "label": "rövid címke",
+      "description": "milyen információ hiányzik a kommunikációdból"
     }
   ],
-  "suggestedFAQ": ["FAQ item 1", "FAQ item 2", "FAQ item 3", "FAQ item 4", "FAQ item 5"],
-  "closingInsight": "one strong sentence summarizing the biggest opportunity"
-}`;
+  "suggestedFAQ": ["FAQ elem 1", "FAQ elem 2", "FAQ elem 3", "FAQ elem 4", "FAQ elem 5"],
+  "closingInsight": "egy tényszerű mondat, ami összefoglalja a fő kommunikációs lehetőséget"
+}
+
+IMPORTANT RULES:
+- confusionScore is a number from 0-100 representing the percentage of comments that show confusion, uncertainty, or missing information.
+- sectionType: Analyze the comments carefully. If they contain actual questions (with question marks or question-like phrasing), use "questions". If they mainly contain opinions, concerns, worries, or objections without direct questions, use "concerns".
+- recurringQuestionsOrConcerns: If sectionType is "questions", list the most common questions. If sectionType is "concerns", list the most common worries, objections, or themes.
+- All text content MUST be in Hungarian with proper accented characters.
+- Use natural Hungarian phrasing, not machine-translated text.
+- Base all observations directly on the comments provided - do not exaggerate or generalize.`;
 
     const response = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -58,7 +85,9 @@ The JSON structure must be:
         messages: [
           {
             role: "user",
-            content: `Analyze these customer comments for recurring confusion patterns. The comments may be in any language - analyze them in their original language but provide your response in the same language as the comments:\n\n${comments}`,
+            content: `Összesen ${commentCount} komment érkezett. Használd ezt a pontos számot a headline-ban és minden hivatkozásban.
+
+Elemezd ezeket az ügyfélkommenteket visszatérő félreértési minták szempontjából. A válaszodat magyar nyelven add meg, megfelelő ékezetekkel:\n\n${comments}`,
           },
         ],
       }),
@@ -97,3 +126,4 @@ The JSON structure must be:
       { status: 500 }
     );
   }
+}
