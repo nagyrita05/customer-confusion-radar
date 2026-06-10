@@ -12,15 +12,32 @@ interface AnalysisResultsProps {
 }
 
 export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
+  const analyzedComments = result.analyzedComments ?? [];
+  const flaggedIndexes = result.flaggedCommentIndexes ?? [];
+  // Total analyzed: prefer the actual analyzed list, fall back to data stats
+  const analyzedCount = analyzedComments.length || dataStats?.analyzedComments || 0;
+  // Keep only valid, unique 1-based indexes
+  const validFlaggedIndexes = Array.from(new Set(flaggedIndexes)).filter(
+    (n) => Number.isInteger(n) && n >= 1 && (analyzedCount === 0 || n <= analyzedCount)
+  );
+  const flaggedCount = validFlaggedIndexes.length;
+  const flaggedComments = validFlaggedIndexes
+    .map((n) => analyzedComments[n - 1])
+    .filter((c): c is string => Boolean(c));
+
   return (
     <div className="space-y-8">
       {/* Data Quality Panel */}
       {dataStats && <DataQualityPanel stats={dataStats} />}
 
       {/* Confusion Score Gauge */}
-      {result.confusionScore !== undefined && (
+      {analyzedCount > 0 && (
         <section className="flex justify-center py-4">
-          <ConfusionGauge score={result.confusionScore} />
+          <ConfusionGauge
+            flaggedCount={flaggedCount}
+            analyzedCount={analyzedCount}
+            flaggedComments={flaggedComments}
+          />
         </section>
       )}
 

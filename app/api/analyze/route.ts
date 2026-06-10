@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
-    const { comments, commentCount } = await request.json();
+    const { comments, commentList, commentCount } = await request.json();
 
     if (!comments || typeof comments !== "string" || comments.trim() === "") {
       return NextResponse.json(
@@ -10,6 +10,15 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Build a numbered version of the comments so the AI can reference them by index.
+    // Prefer the structured commentList if provided; otherwise fall back to splitting.
+    const list: string[] = Array.isArray(commentList) && commentList.length > 0
+      ? commentList
+      : comments.split("\n---\n");
+    const numberedComments = list
+      .map((c: string, i: number) => `[${i + 1}] ${c}`)
+      .join("\n");
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
@@ -41,7 +50,7 @@ AVOID sensational, emotional, or marketing-style phrases such as:
 The JSON structure must be:
 {
   "headline": "32 kommentből 5 visszatérő kommunikációs mintázat rajzolódott ki",
-  "confusionScore": 65,
+  "flaggedCommentIndexes": [1, 4, 7, 12],
   "topConfusions": [
     {
       "topic": "rövid téma megnevezés",
@@ -64,7 +73,7 @@ The JSON structure must be:
 }
 
 IMPORTANT RULES:
-- confusionScore is a number from 0-100 representing the percentage of comments that point to missing or unclear information. A comment counts toward this score if it EITHER: (a) contains a question pointing to missing information, OR (b) contains a statement that reflects an interpretation, assumption, or expectation the communication did not clearly address. Use phrasing like "A kommentek X%-a hiányzó vagy nem egyértelmű információra utal."
+- flaggedCommentIndexes is an array of the comment numbers (1-based, matching the numbering "[N]" shown before each comment in the input) that point to missing or unclear information. A comment should be flagged if it EITHER: (a) contains a question pointing to missing information, OR (b) contains a statement that reflects an interpretation, assumption, or expectation the communication did not clearly address. Only include each index once, and only include indexes that actually exist in the input. Do NOT return a percentage — return the specific flagged comment numbers so the percentage can be computed transparently.
 - NEVER claim that comments "contain misunderstandings" (e.g. "félreértést tartalmaz"). Questions and interpreting statements signal that information is missing or unclear in the communication, not that customers misunderstood something.
 - closingInsight: NEVER make causal claims about conversion or sales (e.g. "jelentősen csökkenti a konverziót", "elveszett vásárlások"). Use cautious, hedged phrasing such as "extra kérdéseket és döntési bizonytalanságot okozhat" or "valószínűleg növeli a vásárlás előtti bizonytalanságot". Always use conditional/probabilistic wording (okozhat, növelheti, valószínűleg), never definite causal statements.
 - sectionType: Analyze the comments carefully. If they contain actual questions (with question marks or question-like phrasing), use "questions". If they mainly contain opinions, concerns, worries, or objections without direct questions, use "concerns".
@@ -87,9 +96,9 @@ IMPORTANT RULES:
         messages: [
           {
             role: "user",
-            content: `Összesen ${commentCount} komment érkezett. Használd ezt a pontos számot a headline-ban és minden hivatkozásban.
+            content: `Összesen ${commentCount} komment érkezett. Használd ezt a pontos számot a headline-ban és minden hivatkozásban. Az egyes kommentek elé tett [N] sorszám alapján add meg a flaggedCommentIndexes mezőt.
 
-Elemezd ezeket az ügyfélkommenteket visszatérő, hiányzó információra utaló kérdések és kommunikációs vakfoltok szempontjából. A válaszodat magyar nyelven add meg, megfelelő ékezetekkel:\n\n${comments}`,
+Elemezd ezeket az ügyfélkommenteket visszatérő, hiányzó információra utaló kérdések és kommunikációs vakfoltok szempontjából. A válaszodat magyar nyelven add meg, megfelelő ékezetekkel:\n\n${numberedComments}`,
           },
         ],
       }),

@@ -19,11 +19,13 @@ export interface DataQualityStats {
 
 export interface AnalysisResult {
   headline: string;
-  confusionScore: number;
+  flaggedCommentIndexes: number[];
   topConfusions: ConfusionPattern[];
   recurringQuestionsOrConcerns: string[];
   sectionType: "questions" | "concerns";
   blindSpots: BlindSpot[];
   suggestedFAQ: string[];
   closingInsight: string;
+  /** The cleaned comments that were analyzed, in the same order the AI saw them (1-based indexes). */
+  analyzedComments?: string[];
 }

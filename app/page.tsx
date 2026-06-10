@@ -45,7 +45,7 @@ export default function HomePage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ comments: cleanedText, commentCount }),
+        body: JSON.stringify({ comments: cleanedText, commentList: cleanedComments, commentCount }),
       });
 
       const data = await response.json();
@@ -54,7 +54,8 @@ export default function HomePage() {
         throw new Error(data.error || "Nem sikerült elemezni a kommenteket");
       }
 
-      setResult(data);
+      // Attach the analyzed comments so the index is fully verifiable in the UI
+      setResult({ ...data, analyzedComments: cleanedComments });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Hiba történt");
     } finally {
