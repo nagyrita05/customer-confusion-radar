@@ -75,27 +75,30 @@ export default function HomePage() {
         style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 40px))" }}
       >
         <div className="max-w-3xl mx-auto px-4 pt-12 md:pt-16 pb-4">
-          <header>
-            {/* Logo unit on white chip */}
-            <div className="inline-flex items-center gap-[14px] bg-white rounded-xl py-[10px] px-[18px] mb-5">
+          <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+            {/* Title block (left) */}
+            <div className="order-2 sm:order-1">
+              <h1 className="text-2xl md:text-3xl font-bold text-[#002060] mb-2 text-balance">
+                Kommunikációs Vakfolt Elemző
+              </h1>
+              <p className="text-lg text-[#4A3D00]">
+                Fedezd fel, mit nem kommunikálsz elég egyértelműen.
+              </p>
+            </div>
+            {/* Logo unit on white chip (top-right on desktop, above title on mobile) */}
+            <div className="order-1 sm:order-2 inline-flex items-center gap-[14px] bg-white rounded-xl py-[10px] px-[18px] self-start shrink-0">
+              <img
+                src="/enner-wordmark.png"
+                alt="ENNER logó"
+                className="h-12 w-auto"
+              />
               <img
                 src="/enner-emblem.png"
                 alt=""
                 aria-hidden="true"
                 className="h-12 w-auto"
               />
-              <img
-                src="/enner-wordmark.png"
-                alt="ENNER logó"
-                className="h-12 w-auto"
-              />
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold text-[#002060] mb-2 text-balance">
-              Kommunikációs Vakfolt Elemző
-            </h1>
-            <p className="text-lg text-[#4A3D00]">
-              Fedezd fel, mit nem kommunikálsz elég egyértelműen.
-            </p>
           </header>
         </div>
       </div>
