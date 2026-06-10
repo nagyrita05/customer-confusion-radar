@@ -64,8 +64,8 @@ The JSON structure must be:
 }
 
 IMPORTANT RULES:
-- confusionScore is a number from 0-100 representing the percentage of comments that contain a question pointing to missing information. NEVER frame this as comments "containing misunderstandings". Questions indicate missing information, not misunderstanding. Use phrasing like "A kommentek X%-a olyan kérdést tartalmaz, amely hiányzó információra utal."
-- NEVER claim that comments "contain misunderstandings" (e.g. "félreértést tartalmaz"). Questions signal that information is missing from the communication, not that customers misunderstood something.
+- confusionScore is a number from 0-100 representing the percentage of comments that point to missing or unclear information. A comment counts toward this score if it EITHER: (a) contains a question pointing to missing information, OR (b) contains a statement that reflects an interpretation, assumption, or expectation the communication did not clearly address. Use phrasing like "A kommentek X%-a hiányzó vagy nem egyértelmű információra utal."
+- NEVER claim that comments "contain misunderstandings" (e.g. "félreértést tartalmaz"). Questions and interpreting statements signal that information is missing or unclear in the communication, not that customers misunderstood something.
 - closingInsight: NEVER make causal claims about conversion or sales (e.g. "jelentősen csökkenti a konverziót", "elveszett vásárlások"). Use cautious, hedged phrasing such as "extra kérdéseket és döntési bizonytalanságot okozhat" or "valószínűleg növeli a vásárlás előtti bizonytalanságot". Always use conditional/probabilistic wording (okozhat, növelheti, valószínűleg), never definite causal statements.
 - sectionType: Analyze the comments carefully. If they contain actual questions (with question marks or question-like phrasing), use "questions". If they mainly contain opinions, concerns, worries, or objections without direct questions, use "concerns".
 - recurringQuestionsOrConcerns: If sectionType is "questions", list the most common questions. If sectionType is "concerns", list the most common worries, objections, or themes.

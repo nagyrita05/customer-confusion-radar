@@ -50,7 +50,7 @@ export function ConfusionGauge({ score }: ConfusionGaugeProps) {
         Vakfolt index
       </p>
       <p className="text-sm text-muted-foreground">
-        A kommentek {clampedScore}%-a olyan kérdést tartalmaz, amely hiányzó információra utal
+        A kommentek {clampedScore}%-a hiányzó vagy nem egyértelmű információra utal
       </p>
       {clampedScore > 70 && (
         <p className="mt-1 text-sm font-semibold text-[#C00000]">
