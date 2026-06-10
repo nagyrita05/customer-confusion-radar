@@ -13,29 +13,18 @@ interface AnalysisResultsProps {
 
 export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
   const analyzedComments = result.analyzedComments ?? [];
-  const flaggedIndexes = result.flaggedCommentIndexes ?? [];
-  // Total analyzed: prefer the actual analyzed list, fall back to data stats
-  const analyzedCount = analyzedComments.length || dataStats?.analyzedComments || 0;
-  // Keep only valid, unique 1-based indexes
-  const validFlaggedIndexes = Array.from(new Set(flaggedIndexes)).filter(
-    (n) => Number.isInteger(n) && n >= 1 && (analyzedCount === 0 || n <= analyzedCount)
-  );
-  const flaggedCount = validFlaggedIndexes.length;
-  const topicBreakdown = result.topicBreakdown ?? [];
 
   return (
     <div className="space-y-8">
       {/* Data Quality Panel */}
       {dataStats && <DataQualityPanel stats={dataStats} />}
 
-      {/* Communication Blind Spots Bar Chart */}
-      {analyzedCount > 0 && topicBreakdown.length > 0 && (
+      {/* Communication Blind Spots Bar Chart — same source of truth as the cards below */}
+      {result.blindSpots.length > 0 && analyzedComments.length > 0 && (
         <section>
           <VakfoltChart
-            topicBreakdown={topicBreakdown}
+            blindSpots={result.blindSpots}
             analyzedComments={analyzedComments}
-            flaggedCount={flaggedCount}
-            analyzedCount={analyzedCount}
           />
         </section>
       )}

@@ -9,12 +9,7 @@ export interface ConfusionPattern {
 export interface BlindSpot {
   label: string;
   description: string;
-}
-
-export interface TopicBreakdownItem {
-  /** Short, noun-based Hungarian label (1-3 words). */
-  label: string;
-  /** 1-based input comment numbers that touch this topic. One comment can appear in multiple topics. */
+  /** 1-based input comment numbers that support / reveal this blind spot. */
   commentIndexes: number[];
 }
 
@@ -27,7 +22,6 @@ export interface DataQualityStats {
 export interface AnalysisResult {
   headline: string;
   flaggedCommentIndexes: number[];
-  topicBreakdown?: TopicBreakdownItem[];
   topConfusions: ConfusionPattern[];
   recurringQuestionsOrConcerns: string[];
   sectionType: "questions" | "concerns";

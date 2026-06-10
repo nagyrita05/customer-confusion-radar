@@ -2,16 +2,12 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import type { TopicBreakdownItem } from "@/lib/types";
+import type { BlindSpot } from "@/lib/types";
 
 interface VakfoltChartProps {
-  topicBreakdown: TopicBreakdownItem[];
+  blindSpots: BlindSpot[];
   /** All analyzed comments, 1-based via index+1. */
   analyzedComments: string[];
-  /** Number of unique flagged comments (for the summary line). */
-  flaggedCount: number;
-  /** Total analyzed comments (for the summary line). */
-  analyzedCount: number;
 }
 
 interface ChartRow {
@@ -20,24 +16,20 @@ interface ChartRow {
   comments: string[];
 }
 
-export function VakfoltChart({
-  topicBreakdown,
-  analyzedComments,
-  flaggedCount,
-  analyzedCount,
-}: VakfoltChartProps) {
+export function VakfoltChart({ blindSpots, analyzedComments }: VakfoltChartProps) {
   const [expandedLabel, setExpandedLabel] = useState<string | null>(null);
 
-  // Build rows: count = number of topic mentions (comments can appear in multiple topics)
-  const rows: ChartRow[] = topicBreakdown
-    .map((topic) => {
-      const validIndexes = Array.from(new Set(topic.commentIndexes)).filter(
+  // Build one row per blind spot, value = number of supporting comments.
+  // Same source of truth as the blind-spot cards below, so counts always match.
+  const rows: ChartRow[] = blindSpots
+    .map((bs) => {
+      const validIndexes = Array.from(new Set(bs.commentIndexes ?? [])).filter(
         (n) => Number.isInteger(n) && n >= 1 && n <= analyzedComments.length
       );
       const comments = validIndexes
         .map((n) => analyzedComments[n - 1])
         .filter((c): c is string => Boolean(c));
-      return { label: topic.label, count: validIndexes.length, comments };
+      return { label: bs.label, count: validIndexes.length, comments };
     })
     .filter((row) => row.count > 0)
     .sort((a, b) => b.count - a.count);
@@ -53,10 +45,10 @@ export function VakfoltChart({
   return (
     <div className="w-full rounded-xl border border-border bg-card p-5 md:p-6">
       <h3 className="text-xl font-semibold text-foreground">
-        Kommunikációs vakfoltok
+        Vakfoltok számokban
       </h3>
       <p className="text-sm text-muted-foreground mt-1">
-        Hány komment utal az egyes hiányzó információkra.
+        Hány komment érinti az egyes hiányzó információkat.
       </p>
 
       {/* Bars */}
@@ -105,7 +97,7 @@ export function VakfoltChart({
                 </button>
               </div>
 
-              {/* Expanded comments behind this topic */}
+              {/* Expanded comments behind this blind spot */}
               {isExpanded && row.comments.length > 0 && (
                 <ul className="mt-2 ml-0 sm:ml-[9.75rem] space-y-2">
                   {row.comments.map((comment, i) => (
@@ -135,12 +127,6 @@ export function VakfoltChart({
       </div>
       <p className="mt-1 text-center text-xs text-muted-foreground">
         Komment említések száma
-      </p>
-
-      {/* Overall summary line — counts UNIQUE flagged comments, not topic mentions */}
-      <p className="mt-5 text-center text-sm text-muted-foreground text-balance">
-        {flaggedCount} a {analyzedCount} elemzett kommentből hiányzó vagy nem
-        egyértelmű információra utal.
       </p>
     </div>
   );
