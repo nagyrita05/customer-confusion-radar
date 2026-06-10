@@ -82,7 +82,7 @@ export default function HomePage() {
                 Kommunikációs Vakfolt Elemző
               </h1>
               <p className="text-lg text-[#4A3D00]">
-                Fedezd fel, mit nem kommunikálsz elég egyértelműen.
+                Találd meg azokat a kérdéseket, amelyeket a kommunikációd még nem válaszol meg.
               </p>
             </div>
             {/* Combined logo, directly on the yellow band (top-right on desktop, above title on mobile) */}
@@ -102,7 +102,7 @@ export default function HomePage() {
             htmlFor="comments"
             className="block text-sm font-medium text-foreground mb-2"
           >
-            Másold be a kommenteket, értékeléseket vagy ügyfélszolgálati üzeneteket (soronként egyet)
+            Másold be a Facebook kommenteket, értékeléseket vagy ügyfélüzeneteket.
           </label>
           <textarea
             id="comments"
@@ -118,6 +118,7 @@ export default function HomePage() {
               onClick={handleAnalyze}
               disabled={isLoading || !comments.trim()}
               size="lg"
+              className="bg-[#001640] hover:bg-[#001026] font-semibold"
             >
               {isLoading ? (
                 <>
