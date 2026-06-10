@@ -7,11 +7,11 @@ interface ActionCardProps {
 
 export function ActionCard({ pattern, index }: ActionCardProps) {
   return (
-    <div className="bg-green-50 dark:bg-green-950/30 rounded-lg p-4 border border-green-200 dark:border-green-800">
-      <p className="text-sm font-bold text-green-800 dark:text-green-300 mb-1">
+    <div className="bg-[#0A2C6E] rounded-lg p-4 border border-[#1A2744]">
+      <p className="text-sm font-bold text-accent mb-1">
         {index + 1}. {pattern.topic}
       </p>
-      <p className="text-sm text-green-700 dark:text-green-400">
+      <p className="text-sm text-[#D6DEF2]">
         {pattern.actionableAdvice}
       </p>
     </div>

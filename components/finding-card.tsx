@@ -8,9 +8,9 @@ interface FindingCardProps {
 
 export function FindingCard({ pattern, index }: FindingCardProps) {
   const severityStyles = {
-    critical: "bg-red-500 text-white border-red-600",
-    moderate: "bg-amber-500 text-white border-amber-600",
-    minor: "bg-teal-500 text-white border-teal-600",
+    critical: "bg-[#C00000] text-white border-[#C00000]",
+    moderate: "bg-accent text-accent-foreground border-accent",
+    minor: "bg-[#F2ECC8] text-[#6B5A12] border-[#EFD98A]",
   };
 
   const severityLabel = {
@@ -20,9 +20,9 @@ export function FindingCard({ pattern, index }: FindingCardProps) {
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-6">
+    <div className="rounded-lg border border-[#EFD98A] bg-[#FFF6D6] p-6">
       <div className="flex items-start justify-between gap-4 mb-4">
-        <h3 className="text-lg font-semibold text-foreground">
+        <h3 className="text-lg font-semibold text-[#002060]">
           {index + 1}. {pattern.topic}
         </h3>
         <span
@@ -35,7 +35,7 @@ export function FindingCard({ pattern, index }: FindingCardProps) {
         </span>
       </div>
 
-      <p className="text-muted-foreground mb-4 leading-relaxed">
+      <p className="text-[#6B5A12] mb-4 leading-relaxed">
         {pattern.humanInsight}
       </p>
 
@@ -44,7 +44,7 @@ export function FindingCard({ pattern, index }: FindingCardProps) {
           {pattern.exampleComments.map((comment, i) => (
             <blockquote
               key={i}
-              className="border-l-4 border-muted-foreground/40 pl-4 py-2 italic text-muted-foreground bg-muted/30 rounded-r-md"
+              className="border-l-4 border-[#EFD98A] pl-4 py-2 italic text-[#6B5A12] bg-white/60 rounded-r-md"
             >
               &ldquo;{comment}&rdquo;
             </blockquote>

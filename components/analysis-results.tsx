@@ -4,7 +4,7 @@ import { ActionCard } from "./action-card";
 import { BlindSpotCard } from "./blind-spot-card";
 import { ConfusionGauge } from "./confusion-gauge";
 import { DataQualityPanel } from "./data-quality-panel";
-import { Search, Lightbulb, HelpCircle, AlertTriangle } from "lucide-react";
+import { Lightbulb, HelpCircle, AlertTriangle } from "lucide-react";
 
 interface AnalysisResultsProps {
   result: AnalysisResult;
@@ -34,7 +34,12 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
       {/* PART 1: Mit találtunk (What we found) */}
       <div className="space-y-8">
         <div className="flex items-center gap-3">
-          <Search className="h-6 w-6 text-primary" />
+          <img
+            src="/enner-emblem.png"
+            alt=""
+            aria-hidden="true"
+            className="h-6 w-6 shrink-0"
+          />
           <div>
             <h2 className="text-2xl font-bold text-foreground">Mit találtunk</h2>
             <p className="text-muted-foreground">A kommentekből kinyert minták és hiányok</p>
@@ -60,9 +65,9 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
           <section>
             <div className="flex items-center gap-2 mb-4">
               {result.sectionType === "questions" ? (
-                <HelpCircle className="h-5 w-5 text-blue-500" />
+                <HelpCircle className="h-5 w-5 text-accent" />
               ) : (
-                <AlertTriangle className="h-5 w-5 text-amber-500" />
+                <AlertTriangle className="h-5 w-5 text-accent" />
               )}
               <h3 className="text-xl font-semibold text-foreground">
                 {result.sectionType === "questions" ? "Leggyakoribb kérdések" : "Visszatérő aggodalmak"}
@@ -97,19 +102,19 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
       <hr className="border-t-2 border-border my-8" />
 
       {/* PART 2: Mit javaslunk (What we recommend) */}
-      <div className="bg-[#F8F8F8] dark:bg-muted/30 -mx-4 px-4 py-8 sm:-mx-6 sm:px-6 rounded-xl space-y-8">
+      <div className="bg-primary -mx-4 px-4 py-8 sm:-mx-6 sm:px-6 rounded-xl space-y-8">
         <div className="flex items-center gap-3">
-          <Lightbulb className="h-6 w-6 text-amber-500" />
+          <Lightbulb className="h-6 w-6 text-accent" />
           <div>
-            <h2 className="text-2xl font-bold text-foreground">Mit javaslunk</h2>
-            <p className="text-muted-foreground">AI-alapú kommunikációs fejlesztési javaslatok</p>
+            <h2 className="text-2xl font-bold text-primary-foreground">Mit javaslunk</h2>
+            <p className="text-[#D6DEF2]">AI-alapú kommunikációs fejlesztési javaslatok</p>
           </div>
         </div>
 
         {/* Action Items */}
         {result.topConfusions.length > 0 && (
           <section>
-            <h3 className="text-xl font-semibold text-foreground mb-4">
+            <h3 className="text-xl font-semibold text-accent mb-4">
               Ezt csináld meg ezen a héten
             </h3>
             <div className="space-y-3">
@@ -123,12 +128,12 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
         {/* Suggested FAQ */}
         {result.suggestedFAQ.length > 0 && (
           <section>
-            <h3 className="text-xl font-semibold text-foreground mb-4">
+            <h3 className="text-xl font-semibold text-accent mb-4">
               Javasolt FAQ
             </h3>
             <ol className="list-decimal list-inside space-y-2">
               {result.suggestedFAQ.slice(0, 5).map((item, index) => (
-                <li key={index} className="text-muted-foreground leading-relaxed">
+                <li key={index} className="text-[#D6DEF2] leading-relaxed">
                   {item}
                 </li>
               ))}
@@ -139,8 +144,8 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
         {/* Closing Insight */}
         {result.closingInsight && (
           <section className="mt-8">
-            <div className="border-2 border-primary/30 bg-white dark:bg-background rounded-xl p-6">
-              <p className="text-foreground text-lg md:text-xl leading-relaxed font-medium text-center">
+            <div className="border-2 border-accent bg-[#0A2C6E] rounded-xl p-6">
+              <p className="text-primary-foreground text-lg md:text-xl leading-relaxed font-medium text-center">
                 {result.closingInsight}
               </p>
             </div>

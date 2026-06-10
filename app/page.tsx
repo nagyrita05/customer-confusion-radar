@@ -72,7 +72,12 @@ export default function HomePage() {
       <div className="max-w-3xl mx-auto px-4 py-12 md:py-16">
         {/* Header */}
         <header className="mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3 text-balance">
+          <img
+            src="/enner-wordmark.png"
+            alt="ENNER logó"
+            className="h-14 w-auto mb-4"
+          />
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2 text-balance">
             Kommunikációs Vakfolt Elemző
           </h1>
           <p className="text-lg text-muted-foreground">
@@ -92,7 +97,7 @@ export default function HomePage() {
             id="comments"
             value={comments}
             onChange={(e) => setComments(e.target.value)}
-            className="w-full h-48 p-4 border border-input rounded-lg bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-y"
+            className="w-full h-48 p-4 border border-input rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-y"
             placeholder="Másold be a kommenteket..."
             disabled={isLoading}
           />
