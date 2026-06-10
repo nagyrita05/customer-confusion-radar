@@ -118,7 +118,6 @@ export default function HomePage() {
               onClick={handleAnalyze}
               disabled={isLoading || !comments.trim()}
               size="lg"
-              className="bg-[#001640] hover:bg-[#001026] font-semibold"
             >
               {isLoading ? (
                 <>
