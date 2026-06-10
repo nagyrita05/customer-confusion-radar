@@ -69,24 +69,40 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <div className="max-w-3xl mx-auto px-4 py-12 md:py-16">
-        {/* Header */}
-        <header className="mb-10">
-          <img
-            src="/enner-wordmark.png"
-            alt="ENNER logó"
-            className="h-14 w-auto mb-4"
-          />
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-2 text-balance">
-            Kommunikációs Vakfolt Elemző
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Fedezd fel, mit nem kommunikálsz elég egyértelműen.
-          </p>
-        </header>
+      {/* Hero Band */}
+      <div
+        className="bg-[#F5B700] pb-16"
+        style={{ clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 40px))" }}
+      >
+        <div className="max-w-3xl mx-auto px-4 pt-12 md:pt-16 pb-4">
+          <header>
+            {/* Logo unit on white chip */}
+            <div className="inline-flex items-center gap-[14px] bg-white rounded-xl py-[10px] px-[18px] mb-5">
+              <img
+                src="/enner-emblem.png"
+                alt=""
+                aria-hidden="true"
+                className="h-12 w-auto"
+              />
+              <img
+                src="/enner-wordmark.png"
+                alt="ENNER logó"
+                className="h-12 w-auto"
+              />
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold text-[#002060] mb-2 text-balance">
+              Kommunikációs Vakfolt Elemző
+            </h1>
+            <p className="text-lg text-[#4A3D00]">
+              Fedezd fel, mit nem kommunikálsz elég egyértelműen.
+            </p>
+          </header>
+        </div>
+      </div>
 
+      <div className="max-w-3xl mx-auto px-4 pb-12 md:pb-16">
         {/* Input Section */}
-        <section className="mb-10">
+        <section className="mb-10 mt-4">
           <label
             htmlFor="comments"
             className="block text-sm font-medium text-foreground mb-2"
