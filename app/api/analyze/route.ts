@@ -51,6 +51,10 @@ The JSON structure must be:
 {
   "headline": "32 kommentből 5 visszatérő kommunikációs mintázat rajzolódott ki",
   "flaggedCommentIndexes": [1, 4, 7, 12],
+  "topicBreakdown": [
+    { "label": "Célcsoport", "commentIndexes": [1, 4] },
+    { "label": "Árazás", "commentIndexes": [7, 12, 4] }
+  ],
   "topConfusions": [
     {
       "topic": "rövid téma megnevezés",
@@ -74,6 +78,10 @@ The JSON structure must be:
 
 IMPORTANT RULES:
 - flaggedCommentIndexes is an array of the comment numbers (1-based, matching the numbering "[N]" shown before each comment in the input) that point to missing or unclear information. A comment should be flagged if it EITHER: (a) contains a question pointing to missing information, OR (b) contains a statement that reflects an interpretation, assumption, or expectation the communication did not clearly address. Only include each index once, and only include indexes that actually exist in the input. Do NOT return a percentage — return the specific flagged comment numbers so the percentage can be computed transparently.
+- topicBreakdown groups the flagged comments by the type of missing information they reveal. Derive the topics ENTIRELY from the data — do NOT use a fixed or hard-coded list. Each entry has a "label" and "commentIndexes" (the 1-based input numbers that touch that topic).
+  - Labels MUST be short, stable, noun-based Hungarian labels, ideally 1–3 words (e.g. "Célcsoport", "Technikai részletek", "Árazás", "Formátum", "Visszanézhetőség", "Időpontok"). NEVER use long, sentence-like labels.
+  - One comment CAN belong to multiple topics, so the same index may appear in more than one topicBreakdown entry. This means the sum of all commentIndexes counts across topics may be higher than the number of unique flagged comments — that is expected and correct.
+  - Only reference indexes that are also present in flaggedCommentIndexes. Omit topics with no comments.
 - NEVER claim that comments "contain misunderstandings" (e.g. "félreértést tartalmaz"). Questions and interpreting statements signal that information is missing or unclear in the communication, not that customers misunderstood something.
 - closingInsight: NEVER make causal claims about conversion or sales (e.g. "jelentősen csökkenti a konverziót", "elveszett vásárlások"). Use cautious, hedged phrasing such as "extra kérdéseket és döntési bizonytalanságot okozhat" or "valószínűleg növeli a vásárlás előtti bizonytalanságot". Always use conditional/probabilistic wording (okozhat, növelheti, valószínűleg), never definite causal statements.
 - sectionType: Analyze the comments carefully. If they contain actual questions (with question marks or question-like phrasing), use "questions". If they mainly contain opinions, concerns, worries, or objections without direct questions, use "concerns".

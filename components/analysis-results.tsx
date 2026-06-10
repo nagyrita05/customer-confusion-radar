@@ -2,7 +2,7 @@ import { AnalysisResult, DataQualityStats } from "@/lib/types";
 import { FindingCard } from "./finding-card";
 import { ActionCard } from "./action-card";
 import { BlindSpotCard } from "./blind-spot-card";
-import { ConfusionGauge } from "./confusion-gauge";
+import { VakfoltChart } from "./vakfolt-chart";
 import { DataQualityPanel } from "./data-quality-panel";
 import { Lightbulb, HelpCircle, AlertTriangle } from "lucide-react";
 
@@ -21,22 +21,21 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
     (n) => Number.isInteger(n) && n >= 1 && (analyzedCount === 0 || n <= analyzedCount)
   );
   const flaggedCount = validFlaggedIndexes.length;
-  const flaggedComments = validFlaggedIndexes
-    .map((n) => analyzedComments[n - 1])
-    .filter((c): c is string => Boolean(c));
+  const topicBreakdown = result.topicBreakdown ?? [];
 
   return (
     <div className="space-y-8">
       {/* Data Quality Panel */}
       {dataStats && <DataQualityPanel stats={dataStats} />}
 
-      {/* Confusion Score Gauge */}
-      {analyzedCount > 0 && (
-        <section className="flex justify-center py-4">
-          <ConfusionGauge
+      {/* Communication Blind Spots Bar Chart */}
+      {analyzedCount > 0 && topicBreakdown.length > 0 && (
+        <section>
+          <VakfoltChart
+            topicBreakdown={topicBreakdown}
+            analyzedComments={analyzedComments}
             flaggedCount={flaggedCount}
             analyzedCount={analyzedCount}
-            flaggedComments={flaggedComments}
           />
         </section>
       )}
