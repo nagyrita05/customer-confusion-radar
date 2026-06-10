@@ -85,20 +85,12 @@ export default function HomePage() {
                 Fedezd fel, mit nem kommunikálsz elég egyértelműen.
               </p>
             </div>
-            {/* Logo unit on white chip (top-right on desktop, above title on mobile) */}
-            <div className="order-1 sm:order-2 inline-flex items-center gap-[14px] bg-white rounded-xl py-[10px] px-[18px] self-start shrink-0">
-              <img
-                src="/enner-wordmark.png"
-                alt="ENNER logó"
-                className="h-12 w-auto"
-              />
-              <img
-                src="/enner-emblem.png"
-                alt=""
-                aria-hidden="true"
-                className="h-12 w-auto"
-              />
-            </div>
+            {/* Combined logo, directly on the yellow band (top-right on desktop, above title on mobile) */}
+            <img
+              src="/enner-logo.png"
+              alt="ENNER logó"
+              className="order-1 sm:order-2 h-[52px] w-auto self-start shrink-0"
+            />
           </header>
         </div>
       </div>
