@@ -125,7 +125,77 @@ function hasTextContent(line: string): boolean {
   return withoutEmoji.length > 0;
 }
 
+// Patterns that strongly indicate Facebook-style copied comments
+const FACEBOOK_SIGNAL_PATTERNS = [
+  /^\d+\s*(ó|p|perc|óra|nap|hét|hónap|év)\.?$/im, // Relative time markers: "13 ó.", "58 p."
+  /\b(tetszik|válasz|megosztás|like|reply|share)\b/i, // FB UI labels
+  /^\d+\s*(k|ezer|millió)?\s*(megtekintés|like|lájk|reakció|reaction)$/im, // Reaction/engagement counts
+  /·\s*$/m, // Page name lines ending with middle dot
+];
+
+// Detect whether the raw input looks like Facebook-style copied comments
+function isFacebookStyle(rawInput: string): boolean {
+  const lines = rawInput.split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length === 0) return false;
+
+  // Signal 1: presence of FB-specific UI labels, timestamps, or reaction counts
+  const hasFacebookSignals = FACEBOOK_SIGNAL_PATTERNS.some(pattern => pattern.test(rawInput));
+  if (hasFacebookSignals) return true;
+
+  // Signal 2: name-like header lines followed by comment text (multi-line blocks)
+  let usernameFollowedByContent = 0;
+  for (let i = 0; i < lines.length - 1; i++) {
+    if (looksLikeUsername(lines[i]) && !isMetadata(lines[i + 1]) && !looksLikeUsername(lines[i + 1])) {
+      usernameFollowedByContent++;
+    }
+  }
+  // If multiple name->content transitions exist, it's structured FB-style input
+  if (usernameFollowedByContent >= 2) return true;
+
+  return false;
+}
+
+// Treat each non-empty line as a separate comment (simple input format)
+function cleanSimpleLines(rawInput: string): CleaningResult {
+  const allLines = rawInput.split('\n');
+  const totalLines = allLines.length;
+
+  const finalComments = allLines
+    .map(line => line.trim())
+    .filter(line => line.length > 0 && !isMetadata(line));
+
+  return {
+    cleanedComments: finalComments,
+    stats: {
+      totalLines,
+      removedMetadata: totalLines - finalComments.length,
+      analyzedComments: finalComments.length,
+    },
+  };
+}
+
 export function cleanFacebookComments(rawInput: string): CleaningResult {
+  // Step 1: Detect input format and route accordingly
+  if (!isFacebookStyle(rawInput)) {
+    return cleanSimpleLines(rawInput);
+  }
+
+  const blockResult = cleanFacebookCommentBlocks(rawInput);
+
+  // Safe fallback: if block-based cleaning collapsed everything into 1 comment
+  // but the raw input has many short non-empty lines, treat each line as a comment.
+  const nonEmptyLines = rawInput
+    .split('\n')
+    .map(l => l.trim())
+    .filter(Boolean);
+  if (blockResult.cleanedComments.length <= 1 && nonEmptyLines.length >= 3) {
+    return cleanSimpleLines(rawInput);
+  }
+
+  return blockResult;
+}
+
+function cleanFacebookCommentBlocks(rawInput: string): CleaningResult {
   const allLines = rawInput.split('\n');
   const totalLines = allLines.length;
   
