@@ -47,10 +47,10 @@ export function ConfusionGauge({ score }: ConfusionGaugeProps) {
         </div>
       </div>
       <p className="mt-2 text-sm font-semibold text-foreground">
-        Félreértési index
+        Vakfolt index
       </p>
       <p className="text-sm text-muted-foreground">
-        A kommentek {clampedScore}%-a tartalmaz félreértést
+        A kommentek {clampedScore}%-a olyan kérdést tartalmaz, amely hiányzó információra utal
       </p>
       {clampedScore > 70 && (
         <p className="mt-1 text-sm font-semibold text-[#C00000]">

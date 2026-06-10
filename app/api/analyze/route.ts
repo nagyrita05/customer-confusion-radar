@@ -45,7 +45,7 @@ The JSON structure must be:
   "topConfusions": [
     {
       "topic": "rövid téma megnevezés",
-      "humanInsight": "közérthető magyarázat a félreértési mintáról",
+      "humanInsight": "közérthető magyarázat a hiányzó információra utaló mintáról",
       "exampleComments": ["tényleges példa a bemenetből", "másik példa"],
       "actionableAdvice": "egy konkrét teendő erre a hétre",
       "severity": "critical|moderate|minor"
@@ -64,7 +64,9 @@ The JSON structure must be:
 }
 
 IMPORTANT RULES:
-- confusionScore is a number from 0-100 representing the percentage of comments that show confusion, uncertainty, or missing information.
+- confusionScore is a number from 0-100 representing the percentage of comments that contain a question pointing to missing information. NEVER frame this as comments "containing misunderstandings". Questions indicate missing information, not misunderstanding. Use phrasing like "A kommentek X%-a olyan kérdést tartalmaz, amely hiányzó információra utal."
+- NEVER claim that comments "contain misunderstandings" (e.g. "félreértést tartalmaz"). Questions signal that information is missing from the communication, not that customers misunderstood something.
+- closingInsight: NEVER make causal claims about conversion or sales (e.g. "jelentősen csökkenti a konverziót", "elveszett vásárlások"). Use cautious, hedged phrasing such as "extra kérdéseket és döntési bizonytalanságot okozhat" or "valószínűleg növeli a vásárlás előtti bizonytalanságot". Always use conditional/probabilistic wording (okozhat, növelheti, valószínűleg), never definite causal statements.
 - sectionType: Analyze the comments carefully. If they contain actual questions (with question marks or question-like phrasing), use "questions". If they mainly contain opinions, concerns, worries, or objections without direct questions, use "concerns".
 - recurringQuestionsOrConcerns: If sectionType is "questions", list the most common questions. If sectionType is "concerns", list the most common worries, objections, or themes.
 - All text content MUST be in Hungarian with proper accented characters.
@@ -87,7 +89,7 @@ IMPORTANT RULES:
             role: "user",
             content: `Összesen ${commentCount} komment érkezett. Használd ezt a pontos számot a headline-ban és minden hivatkozásban.
 
-Elemezd ezeket az ügyfélkommenteket visszatérő félreértési minták szempontjából. A válaszodat magyar nyelven add meg, megfelelő ékezetekkel:\n\n${comments}`,
+Elemezd ezeket az ügyfélkommenteket visszatérő, hiányzó információra utaló kérdések és kommunikációs vakfoltok szempontjából. A válaszodat magyar nyelven add meg, megfelelő ékezetekkel:\n\n${comments}`,
           },
         ],
       }),
