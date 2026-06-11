@@ -4,7 +4,7 @@ import { ActionCard } from "./action-card";
 import { BlindSpotCard } from "./blind-spot-card";
 import { VakfoltChart } from "./vakfolt-chart";
 import { DataQualityPanel } from "./data-quality-panel";
-import { Lightbulb, HelpCircle, AlertTriangle } from "lucide-react";
+import { Lightbulb, HelpCircle, AlertTriangle, ChevronDown } from "lucide-react";
 
 interface AnalysisResultsProps {
   result: AnalysisResult;
@@ -13,6 +13,12 @@ interface AnalysisResultsProps {
 
 export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
   const analyzedComments = result.analyzedComments ?? [];
+
+  // Blind spots ordered by supporting comment count (descending), matching the chart's priority.
+  // This same order drives the one-to-one recommendations below.
+  const orderedBlindSpots = [...result.blindSpots].sort(
+    (a, b) => (b.commentIndexes?.length ?? 0) - (a.commentIndexes?.length ?? 0)
+  );
 
   return (
     <div className="space-y-8">
@@ -54,9 +60,10 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
         {/* Confusion Patterns */}
         {result.topConfusions.length > 0 && (
           <section>
-            <h3 className="text-xl font-semibold text-foreground mb-4">
+            <h3 className="text-xl font-semibold text-foreground mb-1">
               Félreértési minták
             </h3>
+            <p className="text-muted-foreground mb-4">Mit látunk a kommentekben?</p>
             <div className="space-y-4">
               {result.topConfusions.map((pattern, index) => (
                 <FindingCard key={index} pattern={pattern} index={index} />
@@ -88,14 +95,27 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
           </section>
         )}
 
+        {/* Transition: patterns are driven by missing information */}
+        {result.blindSpots.length > 0 && (
+          <div className="flex flex-col items-center gap-1 py-2 text-center">
+            <ChevronDown className="h-5 w-5 text-muted-foreground" aria-hidden="true" />
+            <p className="text-sm text-muted-foreground">
+              Ezeket a mintákat hiányzó információk váltják ki
+            </p>
+          </div>
+        )}
+
         {/* Communication Blind Spots */}
         {result.blindSpots.length > 0 && (
           <section>
-            <h3 className="text-xl font-semibold text-foreground mb-4">
+            <h3 className="text-xl font-semibold text-foreground mb-1">
               Kommunikációs vakfoltok
             </h3>
+            <p className="text-muted-foreground mb-4">
+              Mi hiányzik a kommunikációból, ami ezeket a mintákat kiváltja?
+            </p>
             <div className="grid gap-4 sm:grid-cols-2">
-              {result.blindSpots.map((blindSpot, index) => (
+              {orderedBlindSpots.map((blindSpot, index) => (
                 <BlindSpotCard
                   key={index}
                   blindSpot={blindSpot}
@@ -120,15 +140,20 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
           </div>
         </div>
 
-        {/* Action Items */}
-        {result.topConfusions.length > 0 && (
+        {/* Action Items — one recommendation per blind spot, ordered by priority */}
+        {orderedBlindSpots.length > 0 && (
           <section>
             <h3 className="text-xl font-semibold text-accent mb-4">
               Ezt csináld meg ezen a héten
             </h3>
             <div className="space-y-3">
-              {result.topConfusions.map((pattern, index) => (
-                <ActionCard key={index} pattern={pattern} index={index} />
+              {orderedBlindSpots.map((blindSpot, index) => (
+                <ActionCard
+                  key={index}
+                  title={blindSpot.shortLabel}
+                  advice={blindSpot.recommendation}
+                  index={index}
+                />
               ))}
             </div>
           </section>

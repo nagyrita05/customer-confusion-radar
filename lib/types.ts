@@ -13,6 +13,8 @@ export interface BlindSpot {
   fullDescription: string;
   /** 1-based input comment numbers that support / reveal this blind spot. */
   commentIndexes: number[];
+  /** One concrete recommendation that answers / closes this specific blind spot. */
+  recommendation: string;
 }
 
 export interface DataQualityStats {

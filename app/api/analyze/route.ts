@@ -66,7 +66,8 @@ The JSON structure must be:
     {
       "shortLabel": "Részvételi forma",
       "fullDescription": "Nem egyértelműen kommunikált, hogy online vagy helyszíni a workshop.",
-      "commentIndexes": [1, 4]
+      "commentIndexes": [1, 4],
+      "recommendation": "Tüntesd fel egyértelműen minden hirdetésben és a leírásban, hogy a workshop online vagy helyszíni formában zajlik."
     }
   ],
   "suggestedFAQ": ["FAQ elem 1", "FAQ elem 2", "FAQ elem 3", "FAQ elem 4", "FAQ elem 5"],
@@ -79,6 +80,7 @@ IMPORTANT RULES:
   - shortLabel: 2–3 words, noun-based, suitable for charts and badges (e.g. "Részvételi forma", "Célcsoport", "Ár tartalma", "Formátum", "Visszanézhetőség", "Időpontok"). NEVER use long, sentence-like text here.
   - fullDescription: a complete missing-communication statement that explains what information is missing. Write it as a full Hungarian sentence (e.g. "Nem egyértelműen kommunikált, hogy online vagy helyszíni a workshop.", "Nem derül ki, milyen tudásszintű résztvevőknek szól a workshop.", "Nem világos, mit tartalmaz pontosan az ár."). Do NOT use bare category labels like "Formátum" or "Árazás" here.
   - commentIndexes lists the 1-based input numbers ("[N]") of EVERY comment that relates to this blind spot — not just one example. You MUST classify ALL comments, not pick a single representative one.
+  - recommendation: EXACTLY ONE concrete, actionable Hungarian recommendation that directly answers / closes THIS blind spot. Every blind spot MUST have its own recommendation — no blind spot may be left without one, and there is a strict one-to-one mapping (one blind spot → one recommendation). The recommendation must address the specific missing information described in fullDescription, not a generic tip.
 
 MANDATORY CLASSIFICATION PROCEDURE (do this before producing commentIndexes):
   1. First, identify the set of blind spots from the data.
@@ -107,7 +109,7 @@ VALIDATION (required before returning):
       },
       body: JSON.stringify({
         model: "claude-sonnet-4-5",
-        max_tokens: 4096,
+        max_tokens: 8192,
         system: systemPrompt,
         messages: [
           {
