@@ -110,7 +110,7 @@ export default function HomePage() {
             value={comments}
             onChange={(e) => setComments(e.target.value)}
             className="w-full h-48 p-4 border border-input rounded-lg bg-card text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring resize-y"
-            placeholder="Másold be a kommenteket..."
+            placeholder={"Másold be a kommenteket...\n\nPl.:\nInternet nélkül is működik?\nMennyi ideig tárolja a felvételeket?\nA reklámból nem derül ki, hogy előfizetés kell hozzá."}
             disabled={isLoading}
           />
 
