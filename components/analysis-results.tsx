@@ -96,7 +96,11 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
             </h3>
             <div className="grid gap-4 sm:grid-cols-2">
               {result.blindSpots.map((blindSpot, index) => (
-                <BlindSpotCard key={index} blindSpot={blindSpot} />
+                <BlindSpotCard
+                  key={index}
+                  blindSpot={blindSpot}
+                  analyzedComments={analyzedComments}
+                />
               ))}
             </div>
           </section>
