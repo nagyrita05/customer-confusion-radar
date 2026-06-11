@@ -29,7 +29,7 @@ export function VakfoltChart({ blindSpots, analyzedComments }: VakfoltChartProps
       const comments = validIndexes
         .map((n) => analyzedComments[n - 1])
         .filter((c): c is string => Boolean(c));
-      return { label: bs.label, count: validIndexes.length, comments };
+      return { label: bs.shortLabel, count: validIndexes.length, comments };
     })
     .filter((row) => row.count > 0)
     .sort((a, b) => b.count - a.count);

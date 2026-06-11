@@ -64,8 +64,8 @@ The JSON structure must be:
   "sectionType": "questions|concerns",
   "blindSpots": [
     {
-      "label": "rövid címke",
-      "description": "milyen információ hiányzik a kommunikációdból",
+      "shortLabel": "Részvételi forma",
+      "fullDescription": "Nem egyértelműen kommunikált, hogy online vagy helyszíni a workshop.",
       "commentIndexes": [1, 4]
     }
   ],
@@ -75,8 +75,9 @@ The JSON structure must be:
 
 IMPORTANT RULES:
 - flaggedCommentIndexes is an array of the comment numbers (1-based, matching the numbering "[N]" shown before each comment in the input) that point to missing or unclear information. A comment should be flagged if it EITHER: (a) contains a question pointing to missing information, OR (b) contains a statement that reflects an interpretation, assumption, or expectation the communication did not clearly address. Only include each index once, and only include indexes that actually exist in the input. Do NOT return a percentage — return the specific flagged comment numbers so the percentage can be computed transparently.
-- blindSpots are the specific pieces of information missing or unclear in the communication. Derive them ENTIRELY from the data — do NOT use a fixed or hard-coded list. Each blind spot has a "label", a "description", and "commentIndexes".
-  - Labels MUST be short, stable, noun-based Hungarian labels, ideally 1–3 words (e.g. "Célcsoport", "Technikai részletek", "Árazás", "Formátum", "Visszanézhetőség", "Időpontok"). NEVER use long, sentence-like labels.
+- blindSpots are the specific pieces of information missing or unclear in the communication. Derive them ENTIRELY from the data — do NOT use a fixed or hard-coded list. Each blind spot has a "shortLabel", a "fullDescription", and "commentIndexes". A blind spot must be expressed as a MISSING-INFORMATION statement, not as a bare category.
+  - shortLabel: 2–3 words, noun-based, suitable for charts and badges (e.g. "Részvételi forma", "Célcsoport", "Ár tartalma", "Formátum", "Visszanézhetőség", "Időpontok"). NEVER use long, sentence-like text here.
+  - fullDescription: a complete missing-communication statement that explains what information is missing. Write it as a full Hungarian sentence (e.g. "Nem egyértelműen kommunikált, hogy online vagy helyszíni a workshop.", "Nem derül ki, milyen tudásszintű résztvevőknek szól a workshop.", "Nem világos, mit tartalmaz pontosan az ár."). Do NOT use bare category labels like "Formátum" or "Árazás" here.
   - commentIndexes lists the 1-based input numbers ("[N]") of EVERY comment that relates to this blind spot — not just one example. You MUST classify ALL comments, not pick a single representative one.
 
 MANDATORY CLASSIFICATION PROCEDURE (do this before producing commentIndexes):

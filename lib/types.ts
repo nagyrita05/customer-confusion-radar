@@ -7,8 +7,10 @@ export interface ConfusionPattern {
 }
 
 export interface BlindSpot {
-  label: string;
-  description: string;
+  /** Short 2-3 word label, used in charts and badges. */
+  shortLabel: string;
+  /** Complete missing-communication statement explaining what information is missing. */
+  fullDescription: string;
   /** 1-based input comment numbers that support / reveal this blind spot. */
   commentIndexes: number[];
 }

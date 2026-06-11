@@ -25,7 +25,7 @@ export function BlindSpotCard({ blindSpot, analyzedComments }: BlindSpotCardProp
   return (
     <div className="rounded-lg border border-[#EFD98A] bg-[#FFF6D6] p-4">
       <div className="flex items-start justify-between gap-3">
-        <h4 className="font-semibold text-[#002060] mb-2">{blindSpot.label}</h4>
+        <h4 className="font-semibold text-[#002060] mb-2">{blindSpot.shortLabel}</h4>
         {count > 0 && (
           <span className="shrink-0 rounded-full bg-[#FFCC00] px-2 py-0.5 text-xs font-semibold text-[#002060]">
             {count} komment
@@ -33,7 +33,7 @@ export function BlindSpotCard({ blindSpot, analyzedComments }: BlindSpotCardProp
         )}
       </div>
       <p className="text-[#6B5A12] text-sm leading-relaxed">
-        {blindSpot.description}
+        {blindSpot.fullDescription}
       </p>
 
       {count > 0 && (
