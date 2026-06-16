@@ -70,7 +70,7 @@ The JSON structure must be:
       "recommendation": "Tüntesd fel egyértelműen minden hirdetésben és a leírásban, hogy a workshop online vagy helyszíni formában zajlik."
     }
   ],
-  "suggestedFAQ": ["FAQ elem 1", "FAQ elem 2", "FAQ elem 3", "FAQ elem 4", "FAQ elem 5"],
+  "suggestedFAQ": ["FAQ elem 1", "FAQ elem 2", "FAQ elem 3", "FAQ elem 4", "FAQ elem 5", "FAQ elem 6", "FAQ elem 7"],
   "closingInsight": "egy tényszerű mondat, ami összefoglalja a fő kommunikációs lehetőséget"
 }
 
@@ -103,6 +103,14 @@ CATEGORY LABEL NORMALIZATION (applies to ALL comments, any industry — do NOT h
   - Do NOT create a separate category for a single vague emotional reaction if it fits an existing broader category — fold it into the closest existing one.
   - The normalized shortLabel for a given concern MUST be used consistently across every output section that references it: blindSpots (Vakfoltok számokban + Kommunikációs vakfoltok), topConfusions / recurringQuestionsOrConcerns (Kommunikációs mintázatok), recommendation titles (Mit javaslunk), and suggestedFAQ. The same concern must never appear under two different labels in different sections.
   - Keep labels short (2–3 words), clear, and business-friendly.
+
+SUGGESTED FAQ COMPLETENESS (suggestedFAQ = the "Javasolt FAQ" section):
+  - PROCEDURE — build the FAQ AFTER blindSpots are final: create one FAQ question per important blind spot, in the same priority order as blindSpots (most-supported first).
+  - If there are at least 6 relevant blind spots, you MUST return between 6 and 8 FAQ questions. If there are fewer than 6 blind spots, return one question per blind spot. Never stop at 5 when more important blind spots exist.
+  - Each FAQ question MUST directly address EXACTLY ONE communication blind spot. Do NOT merge several different issues into one broad question — keep them separate so each important blind spot is covered.
+  - The FAQ MUST cover the most important blind spots identified in the analysis, ESPECIALLY every blind spot that has a recommendation in the recommendation section. Do not leave a recommended blind spot without a matching FAQ question.
+  - If the analysis surfaces topics such as storage location (tárolás helye), access rights (hozzáférési jogok), subscription model (előfizetési modell), offline use (offline működés), technical requirements (technikai követelmények), retention period (tárolási idő), or expandability (bővíthetőség), include a dedicated FAQ question for each that appears.
+  - Keep the questions simple, customer-facing, and ready to paste onto a product page (e.g. "Működik a kamera internet nélkül is?", "Hol tárolják a felvételeket?", "Szükséges-e előfizetés a használathoz?"). Phrase them as real customer questions, not internal notes.
 
 MANDATORY CLASSIFICATION PROCEDURE (do this before producing commentIndexes):
   1. First, identify the set of blind spots from the data.
