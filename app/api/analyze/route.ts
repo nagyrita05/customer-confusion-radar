@@ -142,10 +142,25 @@ Elemezd ezeket az ügyfélkommenteket visszatérő, hiányzó információra uta
     }
 
     // Strip markdown code blocks if present
-    const cleaned = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    let cleaned = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
-    // Parse the JSON response
-    const analysis = JSON.parse(cleaned);
+    // Parse the JSON response. The model occasionally emits raw, unescaped control
+    // characters (newlines/tabs) inside string values when echoing comments that
+    // contain emojis, ellipses or repeated punctuation, which breaks JSON.parse.
+    let analysis;
+    try {
+      analysis = JSON.parse(cleaned);
+    } catch {
+      // Escape stray control characters that appear inside JSON string values,
+      // then retry. This does not change the analysis content, only its encoding.
+      const sanitized = cleaned.replace(/[\u0000-\u001F]/g, (ch: string) => {
+        if (ch === "\n") return "\\n";
+        if (ch === "\r") return "\\r";
+        if (ch === "\t") return "\\t";
+        return "";
+      });
+      analysis = JSON.parse(sanitized);
+    }
     return NextResponse.json(analysis);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
