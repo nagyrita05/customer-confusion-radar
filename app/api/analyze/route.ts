@@ -142,25 +142,38 @@ Elemezd ezeket az ügyfélkommenteket visszatérő, hiányzó információra uta
     }
 
     // Strip markdown code blocks if present
-    let cleaned = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    const withoutFences = content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
 
-    // Parse the JSON response. The model occasionally emits raw, unescaped control
-    // characters (newlines/tabs) inside string values when echoing comments that
-    // contain emojis, ellipses or repeated punctuation, which breaks JSON.parse.
-    let analysis;
+    // Step 1: Strip all control characters (char code < 32) except \n, \r and \t.
+    // The model occasionally emits stray control characters that break JSON.parse.
+    const cleaned = withoutFences.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '');
+
+    // Parse the JSON response, with progressively more forgiving fallbacks.
+    let analysis: unknown;
     try {
       analysis = JSON.parse(cleaned);
     } catch {
-      // Escape stray control characters that appear inside JSON string values,
-      // then retry. This does not change the analysis content, only its encoding.
-      const sanitized = cleaned.replace(/[\u0000-\u001F]/g, (ch: string) => {
-        if (ch === "\n") return "\\n";
-        if (ch === "\r") return "\\r";
-        if (ch === "\t") return "\\t";
-        return "";
-      });
-      analysis = JSON.parse(sanitized);
+      // Step 2: Extract the outermost { ... } block and try parsing that.
+      const match = cleaned.match(/\{[\s\S]*\}/);
+      if (match) {
+        try {
+          analysis = JSON.parse(match[0]);
+        } catch {
+          analysis = null;
+        }
+      }
     }
+
+    // Step 3: If parsing still failed, return a structured error so the UI can show
+    // a friendly retry message instead of crashing on a raw parse error.
+    if (analysis === undefined || analysis === null) {
+      console.error("Analysis error: failed to parse AI response as JSON");
+      return NextResponse.json(
+        { error: "Az elemzés sikertelen, próbáld újra" },
+        { status: 502 }
+      );
+    }
+
     return NextResponse.json(analysis);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
