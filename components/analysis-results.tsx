@@ -166,7 +166,7 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
               Javasolt FAQ
             </h3>
             <ol className="list-decimal list-inside space-y-2">
-              {result.suggestedFAQ.slice(0, 9).map((item, index) => (
+              {result.suggestedFAQ.slice(0, 10).map((item, index) => (
                 <li key={index} className="text-[#D6DEF2] leading-relaxed">
                   {item}
                 </li>
