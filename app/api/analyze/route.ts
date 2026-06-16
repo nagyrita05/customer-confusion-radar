@@ -74,6 +74,20 @@ The JSON structure must be:
   "closingInsight": "egy tényszerű mondat, ami összefoglalja a fő kommunikációs lehetőséget"
 }
 
+PATTERN SUMMARY DETERMINISM (topConfusions = the "Kommunikációs mintázatok / Félreértési minták" list, and the headline count refers to it):
+  - PROCEDURE — follow strictly in this order:
+    1. First build the COMPLETE topConfusions array. Aim for 5–7 pattern items whenever enough relevant comments exist to support them. Never stop early and never truncate the list.
+    2. If fewer than 5 genuinely meaningful, distinct patterns exist in the data, return only as many as are truly supported (it is fine to return fewer than 5 — do NOT invent filler patterns).
+    3. ONLY AFTER the array is final, COUNT its items, and write the headline using that exact count.
+  - The number in the headline sentence MUST be derived from, and exactly equal to, topConfusions.length. NEVER generate the headline number independently from the actual returned list. If the headline says "N ... mintázat", then topConfusions MUST contain exactly N items — no more, no fewer.
+  - Self-check before returning: re-count topConfusions and confirm the headline number matches it. If they differ, fix the headline number to match the array length.
+  - Word the headline naturally for the real count (e.g. for 3 patterns: "20 kommentből 3 visszatérő kommunikációs mintázat rajzolódott ki."). If only 1 pattern, use singular phrasing.
+
+PATTERN vs BLIND SPOT SEPARATION (keep the two sections distinct):
+  - topConfusions describe recurring USER BEHAVIOR, questions, reactions, or concerns — phrase the "topic" as observed behavior/reaction (e.g. "Vásárlás előtti tisztázó kérdések ismétlődnek az előfizetéssel kapcsolatban.", "Többen adatvédelmi aggodalmat fogalmaznak meg.").
+  - blindSpots describe the MISSING INFORMATION behind those reactions, using a short noun-based shortLabel (e.g. "Előfizetési modell", "Adatbiztonság és hozzáférés").
+  - A pattern MAY reference the same topic area as a blind spot, but the two MUST NOT use the exact same label/wording: the pattern is worded as user behavior or reaction, the blind spot as a missing-information label.
+
 IMPORTANT RULES:
 - flaggedCommentIndexes is an array of the comment numbers (1-based, matching the numbering "[N]" shown before each comment in the input) that point to missing or unclear information. A comment should be flagged if it EITHER: (a) contains a question pointing to missing information, OR (b) contains a statement that reflects an interpretation, assumption, or expectation the communication did not clearly address. Only include each index once, and only include indexes that actually exist in the input. Do NOT return a percentage — return the specific flagged comment numbers so the percentage can be computed transparently.
 - blindSpots are the specific pieces of information missing or unclear in the communication. Derive them ENTIRELY from the data — do NOT use a fixed or hard-coded list. Each blind spot has a "shortLabel", a "fullDescription", and "commentIndexes". A blind spot must be expressed as a MISSING-INFORMATION statement, not as a bare category.
