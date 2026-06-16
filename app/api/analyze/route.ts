@@ -60,7 +60,7 @@ The JSON structure must be:
       "severity": "critical|moderate|minor"
     }
   ],
-  "recurringQuestionsOrConcerns": ["Kérdés vagy aggodalom 1", "Kérdés vagy aggodalom 2", "Kérdés vagy aggodalom 3"],
+  "recurringQuestionsOrConcerns": ["Kérdés vagy aggodalom 1", "Kérdés vagy aggodalom 2", "Kérdés vagy aggodalom 3", "Kérdés vagy aggodalom 4", "Kérdés vagy aggodalom 5", "Kérdés vagy aggodalom 6", "Kérdés vagy aggodalom 7"],
   "sectionType": "questions|concerns",
   "blindSpots": [
     {
@@ -125,7 +125,13 @@ VALIDATION (required before returning):
 - NEVER claim that comments "contain misunderstandings" (e.g. "félreértést tartalmaz"). Questions and interpreting statements signal that information is missing or unclear in the communication, not that customers misunderstood something.
 - closingInsight: NEVER make causal claims about conversion or sales (e.g. "jelentősen csökkenti a konverziót", "elveszett vásárlások"). Use cautious, hedged phrasing such as "extra kérdéseket és döntési bizonytalanságot okozhat" or "valószínűleg növeli a vásárlás előtti bizonytalanságot". Always use conditional/probabilistic wording (okozhat, növelheti, valószínűleg), never definite causal statements.
 - sectionType: Analyze the comments carefully. If they contain actual questions (with question marks or question-like phrasing), use "questions". If they mainly contain opinions, concerns, worries, or objections without direct questions, use "concerns".
-- recurringQuestionsOrConcerns: If sectionType is "questions", list the most common questions. If sectionType is "concerns", list the most common worries, objections, or themes.
+- recurringQuestionsOrConcerns (the "Leggyakoribb kérdések" / "Visszatérő aggodalmak" section): If sectionType is "questions", list the most common questions. If sectionType is "concerns", list the most common worries, objections, or themes.
+  - PROCEDURE: build this list AFTER the blind spots are final, then COUNT the items before finalizing.
+  - If enough relevant blind spots exist, you MUST return between 7 and 8 concrete items. If fewer distinct, genuinely relevant blind spots exist, return one item per blind spot (do NOT invent filler).
+  - HARD LIMIT: never return more than 8 items in this section.
+  - The items must cover the most important RECURRING customer uncertainties found in the comments (the highest-priority blind spots first).
+  - Each item must be SPECIFIC enough to drop directly into a FAQ or product page (e.g. "Működik a kamera internet nélkül is?", "Hol tárolják a felvételeket?"), not vague ("Aggályok a termékkel kapcsolatban").
+  - Do NOT merge multiple distinct important issues into one broad item unless truly necessary — keep separate uncertainties as separate items.
 - All text content MUST be in Hungarian with proper accented characters.
 - Use natural Hungarian phrasing, not machine-translated text.
 - Base all observations directly on the comments provided - do not exaggerate or generalize.`;
