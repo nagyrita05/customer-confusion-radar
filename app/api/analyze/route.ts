@@ -230,7 +230,27 @@ Elemezd ezeket az ügyfélkommenteket visszatérő, hiányzó információra uta
       );
     }
 
-    return NextResponse.json(analysis);
+    // Reconcile the pattern-summary count with the actual returned list.
+    // The model occasionally states a number in the headline that does not match
+    // topConfusions.length. We derive the count from the final list length and
+    // rewrite the number that appears right after "kommentből" so the
+    // introductory sentence always matches the number of listed pattern items.
+    const result = analysis as {
+      headline?: unknown;
+      topConfusions?: unknown;
+    };
+    if (
+      typeof result.headline === "string" &&
+      Array.isArray(result.topConfusions)
+    ) {
+      const patternCount = result.topConfusions.length;
+      result.headline = result.headline.replace(
+        /(kommentből\s+)(\d+)/,
+        (_match, prefix) => `${prefix}${patternCount}`
+      );
+    }
+
+    return NextResponse.json(result);
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
     console.error("Analysis error:", msg);
