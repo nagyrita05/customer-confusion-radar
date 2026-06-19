@@ -98,13 +98,22 @@ IMPORTANT RULES:
 
 CATEGORY LABEL NORMALIZATION (keep categories STABLE yet flexible for any industry — do NOT hard-code a closed list):
   - Use short, clear, business-friendly Hungarian category labels.
-  - PREFERRED LABELS — when a topic clearly fits one of these, you MUST use that exact label rather than inventing a synonym:
+  - PREFERRED LABELS — when a topic clearly fits one of these, you MUST use that EXACT label, character-for-character. Do NOT shorten, abbreviate, or reword it:
     Adattárolás helye | Előfizetési modell | Adatbiztonság és hozzáférés | Offline működés | Technikai követelmények | Adatmegőrzési idő | Többkamerás használat
   - Do NOT create a new category name if the topic clearly fits one of the preferred labels above. Only create a new (data-derived) category if the topic clearly falls OUTSIDE all preferred labels — this keeps the analysis flexible for comments pasted from other industries.
+  - CANONICAL MAPPING — these common variants are FORBIDDEN; always replace the variant on the left with the exact preferred label on the right:
+    "Tárolás helye", "Felhő vs helyi tárolás", "Adatok tárolása", "Felhőtárolás" → "Adattárolás helye"
+    "Tárolási idő", "Megőrzési idő", "Mennyi ideig tárol" → "Adatmegőrzési idő"
+    "Bővíthetőség", "Több kamera", "Több kamera összekötése", "Kamerák kezelése", "Skálázhatóság" → "Többkamerás használat"
+    "Adatbiztonság", "Hozzáférési jogok", "Hozzáférés", "Adatvédelem", "Ki láthatja a felvételeket", "Harmadik fél hozzáférése" → "Adatbiztonság és hozzáférés"
+    "Előfizetés szükségessége", "Előfizetés", "Díjazás", "Árazás" (ha előfizetésről szól) → "Előfizetési modell"
+    "Internetfüggőség", "Internet nélkül", "Hálózat kiesése" → "Offline működés"
+    "Technikai feltételek", "Rendszerkövetelmények", "Telepítési feltételek" → "Technikai követelmények"
+  - Merge "Adatbiztonság" and "Hozzáférési jogok" into "Adatbiztonság és hozzáférés" whenever both refer to who can access data, how data is protected, or whether third parties can view the recordings.
   - The SAME underlying concern must always use the SAME shortLabel. Before finalizing, review your shortLabels and MERGE any that refer to the same user concern even if worded differently. Keep them separate only if they describe genuinely different user needs.
-  - When merging, prefer the more specific and business-friendly label. Example: prefer "Előfizetési modell" over "Előfizetés szükségessége"; merge "Internetfüggőség" and "Offline működés" into "Offline működés"; merge "Adatbiztonság" and "Hozzáférési jogok" into "Adatbiztonság és hozzáférés" when they describe the same concern; map "Tárolás helye" / "Felhő vs helyi tárolás" to "Adattárolás helye"; map "Tárolási idő" to "Adatmegőrzési idő"; map "Több kamera összekötése" to "Többkamerás használat".
   - Do NOT create a separate blind spot category from a single vague emotional reaction. A vague emotional reaction (e.g. fear of continuous monitoring / being watched) may ONLY become its own blind spot if it is supported by AT LEAST 2 comments. Otherwise assign it to the closest broader category — typically "Adatbiztonság és hozzáférés" or "Offline működés" depending on the meaning.
   - The normalized shortLabel for a given concern MUST be used consistently across every output section that references it: blindSpots (Vakfoltok számokban + Kommunikációs vakfoltok), topConfusions / recurringQuestionsOrConcerns (Kommunikációs mintázatok), recommendation titles (Mit javaslunk), and suggestedFAQ. The same concern must never appear under two different labels in different sections.
+  - FINAL RELABEL PASS (do this last, before returning): scan every shortLabel you produced. For each one that matches a forbidden variant in the CANONICAL MAPPING above, rewrite it to the exact preferred label. Confirm no preferred-label topic was left under a shortened or alternative name anywhere in the output.
   - Keep labels short (2–3 words), clear, and business-friendly.
 
 SUGGESTED FAQ COMPLETENESS (suggestedFAQ = the "Javasolt FAQ" section):
