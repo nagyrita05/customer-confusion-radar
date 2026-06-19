@@ -96,11 +96,14 @@ IMPORTANT RULES:
   - commentIndexes lists the 1-based input numbers ("[N]") of EVERY comment that relates to this blind spot — not just one example. You MUST classify ALL comments, not pick a single representative one.
   - recommendation: EXACTLY ONE concrete, actionable Hungarian recommendation that directly answers / closes THIS blind spot. Every blind spot MUST have its own recommendation — no blind spot may be left without one, and there is a strict one-to-one mapping (one blind spot → one recommendation). The recommendation must address the specific missing information described in fullDescription, not a generic tip.
 
-CATEGORY LABEL NORMALIZATION (applies to ALL comments, any industry — do NOT hard-code categories):
-  - Derive categories from the actual comments. Do NOT use a fixed universal list — the labels must stay flexible for comments pasted from any industry.
+CATEGORY LABEL NORMALIZATION (keep categories STABLE yet flexible for any industry — do NOT hard-code a closed list):
+  - Use short, clear, business-friendly Hungarian category labels.
+  - PREFERRED LABELS — when a topic clearly fits one of these, you MUST use that exact label rather than inventing a synonym:
+    Adattárolás helye | Előfizetési modell | Adatbiztonság és hozzáférés | Offline működés | Technikai követelmények | Adatmegőrzési idő | Többkamerás használat
+  - Do NOT create a new category name if the topic clearly fits one of the preferred labels above. Only create a new (data-derived) category if the topic clearly falls OUTSIDE all preferred labels — this keeps the analysis flexible for comments pasted from other industries.
   - The SAME underlying concern must always use the SAME shortLabel. Before finalizing, review your shortLabels and MERGE any that refer to the same user concern even if worded differently. Keep them separate only if they describe genuinely different user needs.
-  - When merging, prefer the more specific and business-friendly label. Example: prefer "Előfizetési modell" over "Előfizetés szükségessége"; merge "Internetfüggőség" and "Offline működés" into one label (e.g. "Offline működés"); merge "Adatbiztonság" and "Hozzáférési jogok" into one label only if they describe the same concern.
-  - Do NOT create a separate category for a single vague emotional reaction if it fits an existing broader category — fold it into the closest existing one.
+  - When merging, prefer the more specific and business-friendly label. Example: prefer "Előfizetési modell" over "Előfizetés szükségessége"; merge "Internetfüggőség" and "Offline működés" into "Offline működés"; merge "Adatbiztonság" and "Hozzáférési jogok" into "Adatbiztonság és hozzáférés" when they describe the same concern; map "Tárolás helye" / "Felhő vs helyi tárolás" to "Adattárolás helye"; map "Tárolási idő" to "Adatmegőrzési idő"; map "Több kamera összekötése" to "Többkamerás használat".
+  - Do NOT create a separate blind spot category from a single vague emotional reaction. A vague emotional reaction (e.g. fear of continuous monitoring / being watched) may ONLY become its own blind spot if it is supported by AT LEAST 2 comments. Otherwise assign it to the closest broader category — typically "Adatbiztonság és hozzáférés" or "Offline működés" depending on the meaning.
   - The normalized shortLabel for a given concern MUST be used consistently across every output section that references it: blindSpots (Vakfoltok számokban + Kommunikációs vakfoltok), topConfusions / recurringQuestionsOrConcerns (Kommunikációs mintázatok), recommendation titles (Mit javaslunk), and suggestedFAQ. The same concern must never appear under two different labels in different sections.
   - Keep labels short (2–3 words), clear, and business-friendly.
 
