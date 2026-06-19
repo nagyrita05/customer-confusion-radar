@@ -96,6 +96,14 @@ IMPORTANT RULES:
   - commentIndexes lists the 1-based input numbers ("[N]") of EVERY comment that relates to this blind spot — not just one example. You MUST classify ALL comments, not pick a single representative one.
   - recommendation: EXACTLY ONE concrete, actionable Hungarian recommendation that directly answers / closes THIS blind spot. Every blind spot MUST have its own recommendation — no blind spot may be left without one, and there is a strict one-to-one mapping (one blind spot → one recommendation). The recommendation must address the specific missing information described in fullDescription, not a generic tip.
 
+RECOMMENDATION WRITING ("Mit javaslunk" section — built from the per-blind-spot recommendation fields):
+  - Each recommendation corresponds to exactly ONE communication blind spot, and the recommendation's title is the blind spot's shortLabel — use the SAME exact normalized category labels as the "Kommunikációs vakfoltok" section (see CATEGORY LABEL NORMALIZATION below). The label must match character-for-character.
+  - Aim for 5–7 concrete weekly actions when enough blind spots exist. Because emotional reactions get folded into broader blind spots (see normalization rules), the blind spot list should naturally land in this range; do NOT pad with filler or split one concern into several recommendations to reach a number.
+  - Do NOT create a separate recommendation from a single vague emotional reaction. If a vague emotional reaction is supported by fewer than 2 comments, fold it into the closest broader blind spot and address it inside that broader recommendation instead.
+  - Write for a small business owner with NO technical background. Keep the tone direct, helpful, and business-friendly, and make every recommendation doable within ONE week.
+  - Avoid jargon that did not appear in the original comments. Specifically avoid overly technical terms such as "zero-knowledge architecture", "end-to-end encryption", "titkosítás", or "security audit" UNLESS those exact terms actually appeared in the comments being analyzed.
+  - Prefer plain, practical wording. Example for an "Adatbiztonság és hozzáférés" blind spot: "Írd le, ki férhet hozzá az adatokhoz, hogyan véditek őket, és mit tesztek illetéktelen hozzáférés ellen." Each recommendation should tell the owner exactly what to write, publish, or clarify.
+
 CATEGORY LABEL NORMALIZATION (keep categories STABLE yet flexible for any industry — do NOT hard-code a closed list):
   - Use short, clear, business-friendly Hungarian category labels.
   - PREFERRED LABELS — when a topic clearly fits one of these, you MUST use that EXACT label, character-for-character. Do NOT shorten, abbreviate, or reword it:
