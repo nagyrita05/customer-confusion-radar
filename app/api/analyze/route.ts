@@ -124,13 +124,21 @@ CATEGORY LABEL NORMALIZATION (keep categories STABLE yet flexible for any indust
   - FINAL RELABEL PASS (do this last, before returning): scan every shortLabel you produced. For each one that matches a forbidden variant in the CANONICAL MAPPING above, rewrite it to the exact preferred label. Confirm no preferred-label topic was left under a shortened or alternative name anywhere in the output.
   - Keep labels short (2–3 words), clear, and business-friendly.
 
-SUGGESTED FAQ COMPLETENESS (suggestedFAQ = the "Javasolt FAQ" section):
+SUGGESTED FAQ COMPLETENESS (suggestedFAQ = the "Javasolt FAQ" section — it must read like a ready-to-use FAQ block for a product page):
   - PROCEDURE — build the FAQ AFTER blindSpots are final: create one FAQ question per important blind spot, in the same priority order as blindSpots (most-supported first).
   - If there are 7 or more important blind spots, you MUST return between 8 and 10 FAQ questions. If there are exactly 6, return 6–8. If there are fewer than 6 blind spots, return one question per blind spot. Never stop early when more important blind spots exist.
-  - Each FAQ question MUST directly address EXACTLY ONE communication blind spot. Do NOT merge several different issues into one broad question — keep them separate so each important blind spot is covered.
-  - The FAQ MUST include EVERY major topic from the recommendation section whenever possible. Do not omit an important recommendation category just to keep the FAQ shorter — every recommended blind spot must have a matching FAQ question.
-  - If the analysis surfaces topics such as storage location (tárolás helye), access rights (hozzáférési jogok), subscription model (előfizetési modell), offline use (offline működés), technical requirements (technikai követelmények), retention period (tárolási idő), or expandability / multi-device use (bővíthetőség, több kamera összekötése, skálázhatóság, csatlakoztatott eszközök), include a dedicated FAQ question for each that appears. If technical requirements appear in the recommendations, you MUST include one customer-facing FAQ question about technical requirements. If the recommendation section covers expandability, multi-camera use, scalability, or connected devices, you MUST include one FAQ question on that topic, and you must NOT drop it.
-  - Keep the questions simple, customer-facing, and ready to paste onto a product page (e.g. "Működik a kamera internet nélkül is?", "Hol tárolják a felvételeket?", "Szükséges-e előfizetés a használathoz?"). Phrase them as real customer questions, not internal notes.
+  - Each FAQ question MUST directly address EXACTLY ONE important communication blind spot. Do NOT merge several important issues into one broad question — keep them separate so each important blind spot is covered.
+  - The FAQ MUST cover the SAME main topics that appear in the "Kommunikációs vakfoltok" and "Mit javaslunk" sections. Do not omit an important category just to keep the FAQ shorter — every important blind spot / recommended category must have a matching FAQ question.
+  - If these topics appear anywhere in the analysis, you MUST include a dedicated FAQ question for EACH of them (use natural Hungarian customer wording):
+    1. storage location (Adattárolás helye) — e.g. "Hol tárolják a felvételeket?"
+    2. access rights / data security (Adatbiztonság és hozzáférés) — e.g. "Ki férhet hozzá a felvételekhez, és hogyan védik az adataimat?"
+    3. subscription model (Előfizetési modell) — e.g. "Szükséges-e előfizetés a használathoz?"
+    4. what happens after subscription cancellation — e.g. "Mi történik a felvételeimmel, ha lemondom az előfizetést?"
+    5. offline use / internet outage (Offline működés) — e.g. "Működik a kamera internet nélkül vagy ha kimarad a net?"
+    6. retention time (Adatmegőrzési idő) — e.g. "Meddig őrzik meg a felvételeket?"
+    7. technical requirements (Technikai követelmények) — e.g. "Milyen technikai feltételek kellenek a használatához?"
+    8. multi-camera use (Többkamerás használat) — e.g. "Több kamerát is használhatok egy fiókkal?"
+  - Keep the questions simple, customer-facing, and ready to paste onto a product page. Phrase them as real customer questions in natural Hungarian, not internal notes.
 
 MANDATORY CLASSIFICATION PROCEDURE (do this before producing commentIndexes):
   1. First, identify the set of blind spots from the data.
