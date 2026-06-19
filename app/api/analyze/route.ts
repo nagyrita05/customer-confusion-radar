@@ -71,7 +71,7 @@ The JSON structure must be:
     }
   ],
   "suggestedFAQ": ["FAQ elem 1", "FAQ elem 2", "FAQ elem 3", "FAQ elem 4", "FAQ elem 5", "FAQ elem 6", "FAQ elem 7"],
-  "closingInsight": "egy tényszerű mondat, ami összefoglalja a fő kommunikációs lehetőséget"
+  "closingInsight": "egy rövid, óvatos összefoglaló mondat a legerősebb vakfoltokról, feltételes megfogalmazással (pl. növelheti, hozzájárulhat, ismétlődő kérdéseket jelezhet) - kerüld az okozza típusú erős oksági állításokat"
 }
 
 PATTERN SUMMARY DETERMINISM (topConfusions = the "Kommunikációs mintázatok / Félreértési minták" list, and the headline count refers to it):
@@ -151,7 +151,13 @@ MANDATORY CLASSIFICATION PROCEDURE (do this before producing commentIndexes):
 VALIDATION (required before returning):
   - For every blind spot, the count that will be shown is exactly the length of its commentIndexes array. Re-check that each list contains ALL matching comments from your comment-by-comment pass, with no matching comment omitted and no duplicates.
 - NEVER claim that comments "contain misunderstandings" (e.g. "félreértést tartalmaz"). Questions and interpreting statements signal that information is missing or unclear in the communication, not that customers misunderstood something.
-- closingInsight: NEVER make causal claims about conversion or sales (e.g. "jelentősen csökkenti a konverziót", "elveszett vásárlások"). Use cautious, hedged phrasing such as "extra kérdéseket és döntési bizonytalanságot okozhat" or "valószínűleg növeli a vásárlás előtti bizonytalanságot". Always use conditional/probabilistic wording (okozhat, növelheti, valószínűleg), never definite causal statements.
+- closingInsight (the final summary sentence): it must be accurate, cautious, and must NOT overstate causality.
+  - FORBIDDEN strong causal wording: "okozza", "biztosan okozza", "egyértelműen ez az oka", "jelentősen csökkenti a konverziót", "elveszett vásárlások", or any definite cause-and-effect claim.
+  - PREFERRED cautious wording: "növelheti", "hozzájárulhat", "valószínűleg erősíti", "ismétlődő kérdéseket jelezhet", "több ismétlődő kérdést generálhat". Always use conditional/probabilistic phrasing.
+  - Do NOT claim that "a felhasználók jelentős része" (or a large share of users) is affected unless the data clearly supports it; otherwise speak generally about érdeklődők / vásárlás előtti bizonytalanság.
+  - Refer to the STRONGEST communication blind spots from the analysis (the few with the most supporting comments), by their normalized labels.
+  - Keep the sentence short, clear, and business-friendly.
+  - Preferred style example: "A kommentek alapján az adattárolás helye, az előfizetési modell és az adatbiztonsági információk tisztázatlansága növelheti a vásárlás előtti bizonytalanságot, és több ismétlődő kérdést generálhat az érdeklődők részéről."
 - sectionType: Analyze the comments carefully. If they contain actual questions (with question marks or question-like phrasing), use "questions". If they mainly contain opinions, concerns, worries, or objections without direct questions, use "concerns".
 - recurringQuestionsOrConcerns (the "Leggyakoribb kérdések" / "Visszatérő aggodalmak" section): If sectionType is "questions", list the most common questions. If sectionType is "concerns", list the most common worries, objections, or themes.
   - PROCEDURE: build this list AFTER the blind spots are final, then COUNT the items before finalizing.
