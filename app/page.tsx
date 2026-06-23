@@ -51,13 +51,24 @@ export default function HomePage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || "Nem sikerült elemezni a kommenteket");
+        throw new Error(
+          "Az elemzés most nem futott végig. Próbáld újra pár másodperc múlva. Ha ismét előfordul, érdemes rövidebb mintával vagy újratöltés után próbálkozni."
+        );
       }
 
       // Attach the analyzed comments so the index is fully verifiable in the UI
       setResult({ ...data, analyzedComments: cleanedComments });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Hiba történt");
+      const friendlyMessage =
+        "Az elemzés most nem futott végig. Próbáld újra pár másodperc múlva. Ha ismét előfordul, érdemes rövidebb mintával vagy újratöltés után próbálkozni.";
+      // Keep the specific input-validation message; show the friendly message for
+      // any analysis/network/timeout failure.
+      const noCommentsMessage = "Nem találtunk elemezhető kommenteket a bemenetben";
+      setError(
+        err instanceof Error && err.message === noCommentsMessage
+          ? err.message
+          : friendlyMessage
+      );
     } finally {
       setIsLoading(false);
     }

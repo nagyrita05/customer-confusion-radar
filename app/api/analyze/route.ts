@@ -34,7 +34,7 @@ IMPORTANT: Always respond in Hungarian. Use proper Hungarian spelling with accen
 
 TONE GUIDELINES - Use neutral, evidence-based language like a consultant or researcher:
 GOOD examples:
-- "32 kommentből 5 visszatérő kommunikációs mintázat rajzolódott ki."
+- "20 kommentből 7 fő kommunikációs mintázat rajzolódott ki. Ezekhez kapcsolódóan 9 konkrét kommunikációs vakfolt jelent meg."
 - "A kommentek jelentős része ugyanazokat a kérdéseket és bizonytalanságokat tükrözi."
 - "A visszajelzések alapján több kommunikációs vakfolt azonosítható."
 - "A kommentek alapján a felhasználók egy része eltérően értelmezi a termék szerepét."
@@ -79,9 +79,10 @@ PATTERN SUMMARY DETERMINISM (topConfusions = the "Kommunikációs mintázatok / 
     1. First build the COMPLETE topConfusions array. Aim for 5–7 pattern items whenever enough relevant comments exist to support them. Never stop early and never truncate the list.
     2. If fewer than 5 genuinely meaningful, distinct patterns exist in the data, return only as many as are truly supported (it is fine to return fewer than 5 — do NOT invent filler patterns).
     3. ONLY AFTER the array is final, COUNT its items, and write the headline using that exact count.
-  - The number in the headline sentence MUST be derived from, and exactly equal to, topConfusions.length. NEVER generate the headline number independently from the actual returned list. If the headline says "N ... mintázat", then topConfusions MUST contain exactly N items — no more, no fewer.
-  - Self-check before returning: re-count topConfusions and confirm the headline number matches it. If they differ, fix the headline number to match the array length.
-  - Word the headline naturally for the real count (e.g. for 3 patterns: "20 kommentből 3 visszatérő kommunikációs mintázat rajzolódott ki."). If only 1 pattern, use singular phrasing.
+  - The first number in the headline sentence (the "fő kommunikációs mintázat" count) MUST be derived from, and exactly equal to, topConfusions.length. NEVER generate it independently from the actual returned list.
+  - The headline MUST also state the number of specific blind spot categories, and that number MUST equal blindSpots.length. These two numbers DO NOT have to be the same — the detailed text section summarizes the main recurring communication PATTERNS (topConfusions), while the chart and cards show the specific communication BLIND SPOTS / missing-information categories (blindSpots). It is expected and acceptable that several smaller blind spots are grouped into fewer broader patterns.
+  - Make this relationship transparent in the wording. Preferred form: "20 kommentből 7 fő kommunikációs mintázat rajzolódott ki. Ezekhez kapcsolódóan 9 konkrét kommunikációs vakfolt jelent meg." Adjust both numbers to the real counts and use singular phrasing when a count is 1.
+  - Self-check before returning: re-count topConfusions and blindSpots and confirm the two numbers in the headline match those array lengths exactly. If they differ, fix the headline numbers to match.
 
 PATTERN vs BLIND SPOT SEPARATION (keep the two sections distinct):
   - topConfusions describe recurring USER BEHAVIOR, questions, reactions, or concerns — phrase the "topic" as observed behavior/reaction (e.g. "Vásárlás előtti tisztázó kérdések ismétlődnek az előfizetéssel kapcsolatban.", "Többen adatvédelmi aggodalmat fogalmaznak meg.").
@@ -139,6 +140,7 @@ SUGGESTED FAQ COMPLETENESS (suggestedFAQ = the "Javasolt FAQ" section — it mus
     7. technical requirements (Technikai követelmények) — e.g. "Milyen technikai feltételek kellenek a használatához?"
     8. multi-camera use (Többkamerás használat) — e.g. "Több kamerát is használhatok egy fiókkal?"
   - Keep the questions simple, customer-facing, and ready to paste onto a product page. Phrase them as real customer questions in natural Hungarian, not internal notes.
+  - In a normal case (around 20 comments) aim for 8–10 concrete, useful FAQ questions. However, do NOT lower the relevance threshold just to reach 8–10: if fewer than 8 truly relevant questions exist, return only the genuinely useful ones rather than inventing weak ones. Sarcastic, vague, purely positive, or non-actionable comments must NOT be turned into FAQ questions unless they clearly point to a real missing customer-facing information need.
 
 MANDATORY CLASSIFICATION PROCEDURE (do this before producing commentIndexes):
   1. First, identify the set of blind spots from the data.
@@ -244,24 +246,32 @@ Elemezd ezeket az ügyfélkommenteket visszatérő, hiányzó információra uta
       );
     }
 
-    // Reconcile the pattern-summary count with the actual returned list.
-    // The model occasionally states a number in the headline that does not match
-    // topConfusions.length. We derive the count from the final list length and
-    // rewrite the number that appears right after "kommentből" so the
-    // introductory sentence always matches the number of listed pattern items.
+    // Reconcile the headline counts with the actual returned lists.
+    // The model occasionally states numbers in the headline that do not match the
+    // real array lengths. We derive the counts from the final lists and rewrite
+    // them in the headline: the "fő kommunikációs mintázat" count (after
+    // "kommentből") must equal topConfusions.length, and the "konkrét ... vakfolt"
+    // count must equal blindSpots.length. These two numbers may legitimately differ.
     const result = analysis as {
       headline?: unknown;
       topConfusions?: unknown;
+      blindSpots?: unknown;
     };
-    if (
-      typeof result.headline === "string" &&
-      Array.isArray(result.topConfusions)
-    ) {
-      const patternCount = result.topConfusions.length;
-      result.headline = result.headline.replace(
-        /(kommentből\s+)(\d+)/,
-        (_match, prefix) => `${prefix}${patternCount}`
-      );
+    if (typeof result.headline === "string") {
+      if (Array.isArray(result.topConfusions)) {
+        const patternCount = result.topConfusions.length;
+        result.headline = result.headline.replace(
+          /(kommentből\s+)(\d+)/,
+          (_match, prefix) => `${prefix}${patternCount}`
+        );
+      }
+      if (Array.isArray(result.blindSpots)) {
+        const blindSpotCount = result.blindSpots.length;
+        result.headline = result.headline.replace(
+          /(\d+)(\s+konkrét[^.]*?vakfolt)/,
+          (_match, _num, suffix) => `${blindSpotCount}${suffix}`
+        );
+      }
     }
 
     return NextResponse.json(result);

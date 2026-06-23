@@ -61,9 +61,9 @@ export function AnalysisResults({ result, dataStats }: AnalysisResultsProps) {
         {result.topConfusions.length > 0 && (
           <section>
             <h3 className="text-xl font-semibold text-foreground mb-1">
-              Félreértési minták
+              Kommunikációs mintázatok
             </h3>
-            <p className="text-muted-foreground mb-4">Mit látunk a kommentekben?</p>
+            <p className="text-muted-foreground mb-4">Mit látunk a visszajelzésekben?</p>
             <div className="space-y-4">
               {result.topConfusions.map((pattern, index) => (
                 <FindingCard key={index} pattern={pattern} index={index} />
